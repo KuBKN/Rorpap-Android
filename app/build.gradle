@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 21
@@ -23,5 +24,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile "com.android.support:support-v4:20.0.+"
+    compile "com.android.support:support-v4:21.0.+"
+    compile 'com.android.support:multidex:1.0.0'
+    compile 'dev.dworks.libs:volleyplus:+'
+    compile "com.google.android.gms:play-services:8.4.0"
 }
