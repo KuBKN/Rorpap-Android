@@ -1,4 +1,4 @@
-package com.kubkn.rorpap;
+package com.kubkn.rorpap.view;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.kubkn.rorpap.R;
 
 import org.w3c.dom.Text;
 
@@ -28,7 +30,8 @@ public class FragmentGPS extends Fragment {
         final TextView textViewGPS = (TextView) view.findViewById(R.id.textViewGPS);
 
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, new LocationListener() {
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3*1000, 10, new LocationListener() {
+
             @Override
             public void onLocationChanged(Location location) {
                 textViewGPS.setText(location.getLatitude() + " " + location.getLongitude());

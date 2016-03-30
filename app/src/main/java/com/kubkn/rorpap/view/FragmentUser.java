@@ -1,4 +1,4 @@
-package com.kubkn.rorpap;
+package com.kubkn.rorpap.view;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -12,16 +12,20 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
+import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.User;
 import com.kubkn.rorpap.service.HTTPRequest;
+import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
 /**
  * Created by batmaster on 2/24/16 AD.
  */
-public class FragmentLogin extends Fragment {
+public class FragmentUser extends Fragment {
 
     private RorpapApplication app;
 
@@ -48,9 +52,11 @@ public class FragmentLogin extends Fragment {
 
                     @Override
                     public void onResponse(String response) {
+                        String res = response;
+
                         User user = new User(response);
 
-                        Toast.makeText(getActivity().getApplicationContext(), user.toString(), Toast.LENGTH_SHORT).show();
+                        app.getPreferences().putString(Preferences.KEY_USERID, user.get_id());
                     }
                 }, new Response.ErrorListener() {
 

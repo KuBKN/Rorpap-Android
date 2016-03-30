@@ -1,4 +1,4 @@
-package com.kubkn.rorpap;
+package com.kubkn.rorpap.view;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -14,6 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.kubkn.rorpap.FragmentGPS;
+import com.kubkn.rorpap.FragmentLogin;
+import com.kubkn.rorpap.R;
 
 import java.util.ArrayList;
 
