@@ -13,6 +13,7 @@ public class User {
 
     private String jsonString;
 
+    private String _id;
     private String firstname;
     private String lastname;
     private String email;
@@ -29,18 +30,27 @@ public class User {
         try {
             JSONArray ja = new JSONArray(jsonString);
             JSONObject jo = ja.getJSONObject(0);
-            firstname = jo.getString("firstname");
-            lastname = jo.getString("lastname");
-            email = jo.getString("email");
-            password = jo.getString("password");
-            dateOfBirth = jo.getString("dateOfBirth");
-            status = jo.getInt("status");
-            point = jo.getInt("point");
+            _id = jo.getString("_id");
+            firstname = jo.has("firstname") ? jo.getString("firstname") : "";
+            lastname = jo.has("lastname") ? jo.getString("lastname") : "";
+            email = jo.has("email") ? jo.getString("email") : "";
+            password = jo.has("password") ? jo.getString("password") : "";
+            dateOfBirth = jo.has("dateOfBirth") ? jo.getString("dateOfBirth") : "";
+            status = jo.has("status") ? jo.getInt("status") : -1;
+            point = jo.has("point") ? jo.getInt("point") : -1;
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+    public String get_id() {
+        return _id;
+    }
+
+//    public void set_id(String _id) {
+//        this._id = _id;
+//    }
 
     public String getFirstname() {
         return firstname;
@@ -98,8 +108,4 @@ public class User {
 //        this.point = point;
 //    }
 
-    @Override
-    public String toString() {
-        return jsonString;
-    }
 }

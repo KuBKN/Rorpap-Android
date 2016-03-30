@@ -6,7 +6,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,14 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.kubkn.rorpap.FragmentGPS;
-import com.kubkn.rorpap.FragmentLogin;
 import com.kubkn.rorpap.R;
 
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
+    private ArrayList<Fragment> fragmentList;
 
     private String[] mDrawerTitle = {"Login", "GPS"};
     private DrawerLayout mDrawerLayout;
@@ -39,6 +37,10 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fragmentList = new ArrayList<Fragment>();
+        fragmentList.add(new FragmentUser());
+        fragmentList.add(new FragmentGPS());
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mListView = (ListView) findViewById(R.id.drawer);
@@ -81,16 +83,10 @@ public class MainActivity extends ActionBarActivity {
         selectFragment(0);
     }
 
-    private void selectFragment(int position) {
-        ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();
-        fragmentList.add(new FragmentLogin());
-        fragmentList.add(new FragmentGPS());
-//        Bundle args = new Bundle();
-//        args.putInt(KEY_DRAWABLE_ID, imageResourceIds[position]);
-//        fragment.setArguments(args);
-
+    public void selectFragment(int position) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragmentList.get(position));
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 

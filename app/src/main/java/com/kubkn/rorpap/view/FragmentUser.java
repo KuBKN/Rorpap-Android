@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -34,44 +35,52 @@ public class FragmentUser extends Fragment {
 
         app = (RorpapApplication) getActivity().getApplicationContext();
 
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        if (app.getPreferences().getString(Preferences.KEY_USERID) == null) {
+            View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        final EditText editTextUsername = (EditText) view.findViewById(R.id.editTextUsername);
-        final EditText editTextPassword = (EditText) view.findViewById(R.id.editTextPassword);
+            final EditText editTextUsername = (EditText) view.findViewById(R.id.editTextUsername);
+            final EditText editTextPassword = (EditText) view.findViewById(R.id.editTextPassword);
 
-        Button buttonLogin = (Button) view.findViewById(R.id.buttonLogin);
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            Button buttonLogin = (Button) view.findViewById(R.id.buttonLogin);
+            buttonLogin.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                HashMap<String, String> params = new HashMap<String, String>();
-                params.put("email", editTextUsername.getText().toString());
-                params.put("password", HTTPRequest.md5(editTextPassword.getText().toString()));
+                @Override
+                public void onClick(View v) {
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("email", editTextUsername.getText().toString());
+                    params.put("password", HTTPRequest.md5(editTextPassword.getText().toString()));
 
-                app.getHttpRequest().post("user/login", params, new Response.Listener<String>() {
+                    app.getHttpRequest().post("user/login", params, new Response.Listener<String>() {
 
-                    @Override
-                    public void onResponse(String response) {
-                        String res = response;
+                        @Override
+                        public void onResponse(String response) {
+                            String res = response;
 
-                        User user = new User(response);
+                            User user = new User(response);
 
-                        app.getPreferences().putString(Preferences.KEY_USERID, user.get_id());
-                    }
-                }, new Response.ErrorListener() {
+                            app.getPreferences().putString(Preferences.KEY_USERID, user.get_id());
+//                            ((MainActivity) getActivity()).selectFragment(0);
+                        }
+                    }, new Response.ErrorListener() {
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
 
-//        int resourceId = getArguments().getInt(MyActivity.KEY_DRAWABLE_ID);
+            return view;
+        }
+        else {
+            View view = inflater.inflate(R.layout.fragment_user, container, false);
 
+            TextView textViewID = (TextView) view.findViewById(R.id.textViewID);
+            textViewID.setText(app.getPreferences().getString(Preferences.KEY_USERID));
 
-        return view;
+            return view;
+        }
     }
 
 }
