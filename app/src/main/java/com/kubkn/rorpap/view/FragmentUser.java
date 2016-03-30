@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.kubkn.rorpap.R;
+import com.kubkn.rorpap.model.Request;
 import com.kubkn.rorpap.model.User;
 import com.kubkn.rorpap.service.HTTPRequest;
 import com.kubkn.rorpap.service.Preferences;
@@ -21,6 +22,7 @@ import com.kubkn.rorpap.service.RorpapApplication;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -76,8 +78,29 @@ public class FragmentUser extends Fragment {
         else {
             View view = inflater.inflate(R.layout.fragment_user, container, false);
 
+            String user_id = app.getPreferences().getString(Preferences.KEY_USERID);
+
             TextView textViewID = (TextView) view.findViewById(R.id.textViewID);
-            textViewID.setText(app.getPreferences().getString(Preferences.KEY_USERID));
+            textViewID.setText(user_id);
+
+            final TextView textViewTmp = (TextView) view.findViewById(R.id.textViewTmp);
+
+            app.getHttpRequest().get("request/get_quest/Inprogress/" + user_id, null, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    textViewTmp.setText(response);
+
+                    ArrayList<Request> lists = Request.getLists(response);
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    error.printStackTrace();
+                }
+            });
 
             return view;
         }
