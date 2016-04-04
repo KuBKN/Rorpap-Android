@@ -68,7 +68,7 @@ public class HTTPRequest {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.d("erro", error.getMessage());
             }
         });
     }
@@ -81,7 +81,7 @@ public class HTTPRequest {
      * @param errorCallback Response.ErrorListener callback action if response error
      */
     public void get(String path, HashMap<String, String> params, Response.Listener<String> callback, Response.ErrorListener errorCallback) {
-        request(Request.Method.GET, BASE_URL + path, params, callback, errorCallback);
+        request(Request.Method.GET, path, params, callback, errorCallback);
     }
 
     /**

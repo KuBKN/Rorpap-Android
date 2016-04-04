@@ -11,6 +11,7 @@ public class Preferences {
     private final static String PREF_KEY = "rorpap";
 
     public final static String KEY_USERID = "KEY_USERID";
+    public final static String KEY_GCM_TOKEN = "KEY_GCM_TOKEN";
 
     SharedPreferences sp;
     SharedPreferences.Editor editor;

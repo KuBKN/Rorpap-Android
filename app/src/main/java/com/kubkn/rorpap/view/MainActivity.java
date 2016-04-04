@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.kubkn.rorpap.R;
+import com.kubkn.rorpap.service.gcm.GCMUtilities;
 
 import java.util.ArrayList;
 
@@ -81,6 +82,8 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         selectFragment(0);
+
+        GCMUtilities.register(getApplicationContext());
     }
 
     public void selectFragment(int position) {
