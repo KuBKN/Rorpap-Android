@@ -16,8 +16,7 @@ import android.widget.ListView;
 
 import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.service.gcm.GCMUtilities;
-
-import java.util.ArrayList;
+import com.kubkn.rorpap.view.fragment.myquest.FragmentMyQuest;
 
 public class MainActivity extends ActionBarActivity {
 
