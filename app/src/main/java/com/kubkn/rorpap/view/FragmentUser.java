@@ -83,22 +83,12 @@ public class FragmentUser extends Fragment {
             TextView textViewID = (TextView) view.findViewById(R.id.textViewID);
             textViewID.setText(user_id);
 
-            final TextView textViewTmp = (TextView) view.findViewById(R.id.textViewTmp);
-
-            app.getHttpRequest().get("request/get_quest/Inprogress/" + user_id, null, new Response.Listener<String>() {
-
-                @Override
-                public void onResponse(String response) {
-                    textViewTmp.setText(response);
-
-                    ArrayList<Request> lists = Request.getLists(response);
-                }
-            }, new Response.ErrorListener() {
+            Button buttonLogout = (Button) view.findViewById(R.id.buttonLogout);
+            buttonLogout.setOnClickListener(new View.OnClickListener() {
 
                 @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                    error.printStackTrace();
+                public void onClick(View v) {
+                    app.getPreferences().remove(Preferences.KEY_USERID);
                 }
             });
 
