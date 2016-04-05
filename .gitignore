@@ -21,8 +21,8 @@ local.properties
 
 # Android Studio
 .idea/
-.gradle
-/*/local.properties
+#.gradle
+#/*/local.properties
 /*/out
 /*/*/build
 /*/*/production
@@ -31,3 +31,8 @@ local.properties
 *.ipr
 *~
 *.swp
+
+/.idea/workspace.xml
+/.idea/libraries
+/build
+/captures

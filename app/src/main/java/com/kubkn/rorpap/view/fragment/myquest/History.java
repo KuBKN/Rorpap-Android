@@ -35,7 +35,7 @@ public class History extends Fragment {
         app.getHttpRequest().get("request/get_request/Finished/" + sender_id, null, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                RequestsAdapter adapter = new RequestsAdapter(Request.getLists(response));
+                RequestsAdapter adapter = new RequestsAdapter(Request.getLists(response), RequestsAdapter.UNKNOWN);
                 recyclerView.setAdapter(adapter);
             }
         });

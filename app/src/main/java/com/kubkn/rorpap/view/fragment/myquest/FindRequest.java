@@ -35,7 +35,7 @@ public class FindRequest extends Fragment {
         app.getHttpRequest().get("request/get_request/Pending/!" + sender_id, null, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                RequestsAdapter adapter = new RequestsAdapter(Request.getLists(response));
+                RequestsAdapter adapter = new RequestsAdapter(Request.getLists(response), RequestsAdapter.MY_QUEST_PENDING);
                 recyclerView.setAdapter(adapter);
             }
         });

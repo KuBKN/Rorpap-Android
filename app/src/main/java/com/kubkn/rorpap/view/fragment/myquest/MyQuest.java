@@ -35,7 +35,7 @@ public class MyQuest extends Fragment {
         app.getHttpRequest().get("request/get_request/Reserved/" + sender_id, null, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                RequestsAdapter adapter = new RequestsAdapter(Request.getLists(response));
+                RequestsAdapter adapter = new RequestsAdapter(Request.getLists(response), RequestsAdapter.MY_QUEST_RESERVED);
                 recyclerView.setAdapter(adapter);
             }
         });
