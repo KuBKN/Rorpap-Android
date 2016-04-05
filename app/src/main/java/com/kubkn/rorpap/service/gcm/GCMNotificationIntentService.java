@@ -39,6 +39,10 @@ public class GCMNotificationIntentService extends GcmListenerService {
 
                     noti("รับคำสั่งมาแล้วครับ", "จะเริ่มส่งตำแหน่ง GPS ไปนะ :)");
 
+                } else if (signal.equals("102")) {
+                    stopService(new Intent(this, LocationService.class));
+
+                    noti("รับคำสั่งมาแล้วครับ", "หยุดส่ง GPS จ้า");
                 }
             }
             else if (type.equals("1")) {

@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -54,6 +55,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         holder.textViewDue.setText(requests.get(position).getReqLimitDate() + " " + requests.get(position).getReqLimitTime());
         holder.textViewSender.setText(requests.get(position).getSender_id());
         holder.textViewComment.setText(requests.get(position).getComment());
+
+        holder.buttonEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // do something special here when press EDIT button
+            }
+        });
 
         if (cardType == UNKNOWN) {
             holder.buttonGroupMyRequestPending.setVisibility(View.GONE);
@@ -119,6 +127,12 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         public LinearLayout buttonGroupMyRequestReserved;
         public LinearLayout buttonGroupMyQuestReserved;
 
+        public Button buttonEdit;
+        public Button buttonRemove;
+        public Button buttonAccept;
+        public Button buttonSend;
+        public Button buttonStart;
+
         public ViewHolder(View view) {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.imageView);
@@ -139,6 +153,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             buttonGroupMyQuestPending = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestPending);
             buttonGroupMyRequestReserved = (LinearLayout) view.findViewById(R.id.buttonGroupMyRequestReserved);
             buttonGroupMyQuestReserved = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestReserved);
+
+            buttonEdit = (Button) view.findViewById(R.id.buttonEdit);
+            buttonRemove = (Button) view.findViewById(R.id.buttonRemove);
+            buttonAccept = (Button) view.findViewById(R.id.buttonAccept);
+            buttonSend = (Button) view.findViewById(R.id.buttonSend);
+            buttonStart = (Button) view.findViewById(R.id.buttonStart);
+
         }
     }
 }

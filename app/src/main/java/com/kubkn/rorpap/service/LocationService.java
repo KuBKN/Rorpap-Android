@@ -1,12 +1,16 @@
 package com.kubkn.rorpap.service;
 
 import android.app.IntentService;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -19,17 +23,35 @@ import java.util.HashMap;
 /**
  * Created by batmaster on 3/31/16 AD.
  */
-public class LocationService extends IntentService {
+public class LocationService extends Service {
 
-    public LocationService() {
-        super(LocationService.class.getName());
+    public static int R = 1;
+
+    private LocationManager locationManager;
+    private LocationListener listener;
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        Log.d("pushno loc", "onStartCommand");
+
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3 * 1000, 10, listener);
+
+        Toast.makeText(getApplicationContext(), "GPS onStartCommand", Toast.LENGTH_SHORT).show();
+
+        return START_STICKY;
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    public void onCreate() {
+        super.onCreate();
+        Toast.makeText(getApplicationContext(), "GPS onCreate", Toast.LENGTH_SHORT).show();
+        Log.d("pushno loc", "onCreate");
 
-        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3*1000, 10, new LocationListener() {
+        locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+        listener = new LocationListener() {
 
             @Override
             public void onLocationChanged(Location location) {
@@ -39,6 +61,8 @@ public class LocationService extends IntentService {
                 params.put("user_id", app.getPreferences().getString(Preferences.KEY_USERID));
                 params.put("date", new Date().toString());
                 params.put("location", location.getLatitude() + "," + location.getLongitude());
+
+                Log.d("pushno loc", "round " + R++);
 
                 app.getHttpRequest().post("tracking/update", params, new Response.Listener<String>() {
 
@@ -67,9 +91,23 @@ public class LocationService extends IntentService {
 
             @Override
             public void onProviderDisabled(String provider) {
-                Toast.makeText(getApplicationContext(), "GPS is disabled" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "GPS is disabled", Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        locationManager.removeUpdates(listener);
+        Toast.makeText(getApplicationContext(), "GPS onDestroy", Toast.LENGTH_SHORT).show();
+        Log.d("pushno loc", "onDestroy");
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        Toast.makeText(getApplicationContext(), "GPS onBind", Toast.LENGTH_SHORT).show();
+        Log.d("pushno loc", "onBind");
+        return null;
     }
 }

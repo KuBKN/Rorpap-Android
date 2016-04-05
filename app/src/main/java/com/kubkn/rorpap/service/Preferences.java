@@ -39,4 +39,9 @@ public class Preferences {
         return sp.getString(key, null);
     }
 
+    public void remove(String key) {
+        editor.remove(key);
+        editor.apply();
+    }
+
 }
