@@ -1,7 +1,7 @@
 package com.kubkn.rorpap.view;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -21,9 +21,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
-    private ArrayList<Fragment> fragmentList;
+    private Fragment[] fragments = {
+            new FragmentUser(),
+            new FragmentGPS(),
+            new FragmentMyQuest()
+    };
 
-    private String[] mDrawerTitle = {"Login", "GPS"};
+    private String[] mDrawerTitle = {"Log in", "GPS", "My Quest"};
     private DrawerLayout mDrawerLayout;
     private ListView mListView;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -38,10 +42,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        fragmentList = new ArrayList<Fragment>();
-        fragmentList.add(new FragmentUser());
-        fragmentList.add(new FragmentGPS());
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mListView = (ListView) findViewById(R.id.drawer);
@@ -87,8 +87,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void selectFragment(int position) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragmentList.get(position));
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragments[position]);
         transaction.addToBackStack(null);
         transaction.commit();
     }
