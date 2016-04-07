@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,9 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.Request;
-import com.kubkn.rorpap.model.User;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -79,21 +78,48 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         holder.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // do something special here when press EDIT button
+
             }
         });
 
         holder.buttonRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                app.getHttpRequest().post("request/remove/", null, new Response.Listener<String>() {
 
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("my response tag", "onResponse: " + response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        Log.d("my error response tag", "onErrorResponse: " + error);
+                    }
+                });
             }
         });
 
         holder.buttonAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
+                app.getHttpRequest().post("acceptance/add/" + messenger_id + "/" + requests.get(position).get_id(), null, new Response.Listener<String>() {
 
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("my response tag", "onResponse: " + response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        Log.d("my error response tag", "onErrorResponse: " + error);
+                    }
+                });
             }
         });
 
@@ -145,7 +171,20 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         holder.buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                app.getHttpRequest().post("request/finish/", null, new Response.Listener<String>() {
 
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("my response tag", "onResponse: " + response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        Log.d("my error response tag", "onErrorResponse: " + error);
+                    }
+                });
             }
         });
 
