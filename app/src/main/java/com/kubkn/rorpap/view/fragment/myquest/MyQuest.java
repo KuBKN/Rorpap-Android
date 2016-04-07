@@ -21,6 +21,7 @@ import com.kubkn.rorpap.view.RequestsAdapter;
 public class MyQuest extends Fragment {
 
     private RecyclerView recyclerView;
+    private RequestsAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,13 +31,32 @@ public class MyQuest extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();
-        String sender_id = app.getPreferences().getString(Preferences.KEY_USERID);
+        String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
-        app.getHttpRequest().get("request/get_request/Reserved/" + sender_id, null, new Response.Listener<String>() {
+        app.getHttpRequest().get("request/get_quest/Reserved/" + messenger_id, null, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                RequestsAdapter adapter = new RequestsAdapter(Request.getLists(response), RequestsAdapter.MY_QUEST_RESERVED);
-                recyclerView.setAdapter(adapter);
+                if ((RequestsAdapter) recyclerView.getAdapter() == null) {
+                    adapter = new RequestsAdapter(getActivity(), Request.getLists(response), RequestsAdapter.MY_QUEST);
+                    recyclerView.setAdapter(adapter);
+                }
+                else {
+                    ((RequestsAdapter) recyclerView.getAdapter()).addRequests(Request.getLists(response));
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                }
+            }
+        });
+        app.getHttpRequest().get("request/get_quest/Inprogress/" + messenger_id, null, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if ((RequestsAdapter) recyclerView.getAdapter() == null) {
+                    adapter = new RequestsAdapter(getActivity(), Request.getLists(response), RequestsAdapter.MY_QUEST);
+                    recyclerView.setAdapter(adapter);
+                }
+                else {
+                    ((RequestsAdapter) recyclerView.getAdapter()).addRequests(Request.getLists(response));
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                }
             }
         });
 

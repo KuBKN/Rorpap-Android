@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
  * Created by batmaster on 2/24/16 AD.
  */
 public class FragmentMyQuest extends Fragment {
+
+    private static boolean hadCreatedTabHost = false;
 
     private MyQuestPagerAdapter myQuestPagerAdapter;
     private ViewPager pager;
@@ -58,8 +61,6 @@ public class FragmentMyQuest extends Fragment {
             }
         });
 
-
-
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -75,11 +76,13 @@ public class FragmentMyQuest extends Fragment {
             }
         };
 
-        for (int i = 0; i < myQuestPagerAdapter.getCount(); i++) {
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(myQuestPagerAdapter.getTag(i))
-                            .setTabListener(tabListener));
+        if (!hadCreatedTabHost) {
+            for (int i = 0; i < myQuestPagerAdapter.getCount(); i++) {
+                actionBar.addTab(
+                        actionBar.newTab()
+                                .setText(myQuestPagerAdapter.getTag(i))
+                                .setTabListener(tabListener));
+            }
         }
 
         return view;

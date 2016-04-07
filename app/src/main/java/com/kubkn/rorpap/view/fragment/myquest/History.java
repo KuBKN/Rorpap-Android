@@ -1,5 +1,6 @@
 package com.kubkn.rorpap.view.fragment.myquest;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,12 +31,12 @@ public class History extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();
-        String sender_id = app.getPreferences().getString(Preferences.KEY_USERID);
+        String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
-        app.getHttpRequest().get("request/get_request/Finished/" + sender_id, null, new Response.Listener<String>() {
+        app.getHttpRequest().get("request/get_quest/Finished/" + messenger_id, null, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                RequestsAdapter adapter = new RequestsAdapter(Request.getLists(response), RequestsAdapter.UNKNOWN);
+                RequestsAdapter adapter = new RequestsAdapter(getActivity(), Request.getLists(response), RequestsAdapter.MY_QUEST);
                 recyclerView.setAdapter(adapter);
             }
         });
