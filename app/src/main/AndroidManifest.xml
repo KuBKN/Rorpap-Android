@@ -20,11 +20,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".view.MainActivity">
-        </activity>
-
+        <activity android:name=".view.MainActivity"></activity>
         <activity android:name=".view.ProfileActivity">
+        </activity>
+        <activity android:name=".view.MapActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,7 +50,12 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-        <service android:name=".service.LocationService"></service>
+        <service android:name=".service.LocationService" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCFTU-42h7AJCZPdvX6vBEDv9LaCA8p-y8"/>
+
     </application>
 
 </manifest>
