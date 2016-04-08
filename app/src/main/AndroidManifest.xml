@@ -20,16 +20,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MainActivity"></activity>
-        <activity android:name=".view.ProfileActivity">
+        <activity android:name=".view.MainActivity">
         </activity>
-        <activity android:name=".view.MapActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".view.ProfileActivity" />
+        <activity android:name=".view.MapActivity" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -54,8 +48,16 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCFTU-42h7AJCZPdvX6vBEDv9LaCA8p-y8"/>
+            android:value="AIzaSyCFTU-42h7AJCZPdvX6vBEDv9LaCA8p-y8" />
 
+        <activity android:name=".view.LogoActivity" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity android:name=".view.LoginActivity"></activity>
     </application>
 
 </manifest>

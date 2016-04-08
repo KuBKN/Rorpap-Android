@@ -50,7 +50,7 @@ public class GCMUtilities {
             protected void onPostExecute(String msg) {
                 if (!TextUtils.isEmpty(regId)) {
                     storeRegIdinSharedPref(context, regId);
-                    Toast.makeText(context, "Registered with GCM Server successfully.nn" + msg, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "Registered with GCM Server successfully.nn" + msg, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "Reg ID Creation Failed.nnEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg, Toast.LENGTH_LONG).show();
                 }
@@ -73,7 +73,7 @@ public class GCMUtilities {
             @Override
             public void onResponse(String response) {
                 Log.d("savess", "ok: " + response);
-                Toast.makeText(context, "Register GCM ok.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Register GCM ok.", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
 

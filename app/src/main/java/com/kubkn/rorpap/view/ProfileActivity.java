@@ -1,12 +1,23 @@
 package com.kubkn.rorpap.view;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +33,11 @@ import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private String[] mDrawerTitle = {"My Quest", "Map", "Profile", "Log out"};
+    private DrawerLayout mDrawerLayout;
+    private ListView mListView;
+    private ActionBarDrawerToggle mDrawerToggle;
+
     private RorpapApplication app;
 
     private EditText editTextFirstName;
@@ -35,13 +51,86 @@ public class ProfileActivity extends AppCompatActivity {
 
     private boolean showEditPassword = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
         app = (RorpapApplication) getApplicationContext();
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mListView = (ListView) findViewById(R.id.drawer);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.drawer_row, mDrawerTitle);
+
+        mListView.setAdapter(adapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mDrawerLayout.closeDrawer(mListView);
+
+                Intent intent;
+                switch (position) {
+                    case 0:
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case 1:
+                        intent = new Intent(getApplicationContext(), MapActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        app.getPreferences().remove(Preferences.KEY_USERID);
+                        intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                }
+            }
+
+        });
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                invalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu();
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFA337")));
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.actionbar);
+        ImageView menu = (ImageView) actionBar.getCustomView().findViewById(R.id.imageViewMenu);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(mListView);
+            }
+        });
+        ImageView logo = (ImageView) actionBar.getCustomView().findViewById(R.id.imageViewLogo);
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         editTextFirstName = (EditText) findViewById(R.id.editTextFirstName);
         editTextLastName = (EditText) findViewById(R.id.editTextLastName);
@@ -132,5 +221,13 @@ public class ProfileActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error loading profile!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
