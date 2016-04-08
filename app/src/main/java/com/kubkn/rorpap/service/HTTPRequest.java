@@ -136,6 +136,7 @@ public class HTTPRequest {
 
         StringRequest req = new StringRequest(method, BASE_URL + path, callback, errorCallback);
         req.setParams(params);
+        req.setShouldCache(false);
 
         Log.d("_HTTPRequest", req.toString());
 
