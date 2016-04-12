@@ -21,10 +21,12 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.Request;
+import com.kubkn.rorpap.service.HTTPRequest;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by batmaster on 4/5/16 AD.
@@ -152,6 +154,27 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                 @Override
                                 public void onResponse(String response) {
 
+                                    // start sending gps
+                                    HashMap<String, String> params = new HashMap<String, String>();
+                                    params.put("type", "0");
+                                    params.put("signal", "101");
+                                    params.put("title", "");
+                                    params.put("content", "");
+                                    params.put("user_id", app.getPreferences().getString(Preferences.KEY_USERID));
+                                    app.getHttpRequest().post("gcm/push/", params, new Response.Listener<String>() {
+
+                                        @Override
+                                        public void onResponse(String response) {
+                                            Toast.makeText(activity.getApplicationContext(), "Start tracking commanded...", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }, new Response.ErrorListener() {
+
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
                                 }
                             }, new Response.ErrorListener() {
 
@@ -175,7 +198,37 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
 
                     @Override
                     public void onResponse(String response) {
-                        Log.d("my response tag", "onResponse: " + response);
+
+                        app.getHttpRequest().get("request/get_quest/Inprogress/" + app.getPreferences().getString(Preferences.KEY_USERID), null, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                ArrayList<Request> requests = Request.getLists(response);
+                                if (requests.size() > 0) {
+                                    Toast.makeText(activity.getApplicationContext(), "Another quest(s) left, still not stop tracking.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    HashMap<String, String> params = new HashMap<String, String>();
+                                    params.put("type", "0");
+                                    params.put("signal", "102");
+                                    params.put("title", "");
+                                    params.put("content", "");
+                                    params.put("user_id", app.getPreferences().getString(Preferences.KEY_USERID));
+                                    app.getHttpRequest().post("gcm/push/", params, new Response.Listener<String>() {
+
+                                        @Override
+                                        public void onResponse(String response) {
+                                            Toast.makeText(activity.getApplicationContext(), "Stop tracking commanded...", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }, new Response.ErrorListener() {
+
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
                     }
                 }, new Response.ErrorListener() {
 
