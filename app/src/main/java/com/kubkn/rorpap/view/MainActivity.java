@@ -23,7 +23,7 @@ import android.widget.ListView;
 import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
-import com.kubkn.rorpap.view.fragment.myquest.FindRequest;
+import com.kubkn.rorpap.view.fragment.myquest.AcceptedQuest;
 import com.kubkn.rorpap.view.fragment.myquest.History;
 import com.kubkn.rorpap.view.fragment.myquest.MyQuest;
 
@@ -170,13 +170,13 @@ public class MainActivity extends AppCompatActivity {
     private class MyQuestPagerAdapter extends FragmentStatePagerAdapter {
 
         private Fragment[] fragments = {
-                new FindRequest(),
+                new AcceptedQuest(),
                 new MyQuest(),
                 new History()
         };
 
         private String[] tags = {
-                "Find Request", "My Quest", "History"
+                "ACCEPTED", "IN PROGRESS", "HISTORY"
         };
 
         public MyQuestPagerAdapter(FragmentManager fm) {

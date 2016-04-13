@@ -181,7 +181,9 @@ public class FindRequestActivity extends AppCompatActivity {
         };
 
         private String[] tags = {
-                "Find Request"
+                "ALL REQUESTS"
+                // TODO: implement filter / search request
+                //"Filter Requests"
         };
 
         public MyQuestPagerAdapter(FragmentManager fm) {
