@@ -4,12 +4,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +24,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.Request;
@@ -36,7 +34,7 @@ import java.util.ArrayList;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
-    private String[] mDrawerTitle = {"My Quest", "Map", "Profile", "Log out"};
+    private String[] mDrawerTitle = {"Find Request", "Messenger", "Map", "Profile", "Log out"};
     private DrawerLayout mDrawerLayout;
     private ListView mListView;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -69,18 +67,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Intent intent;
                 switch (position) {
                     case 0:
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent = new Intent(getApplicationContext(), FindRequestActivity.class);
                         startActivity(intent);
                         finish();
                         break;
                     case 1:
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
                         break;
                     case 2:
+                        break;
+                    case 3:
                         intent = new Intent(getApplicationContext(), ProfileActivity.class);
                         startActivity(intent);
                         finish();
                         break;
-                    case 3:
+                    case 4:
                         app.getPreferences().remove(Preferences.KEY_USERID);
                         intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);

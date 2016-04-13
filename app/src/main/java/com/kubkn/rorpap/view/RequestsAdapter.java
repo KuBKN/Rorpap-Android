@@ -21,7 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.Request;
-import com.kubkn.rorpap.service.HTTPRequest;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
 
@@ -194,50 +193,68 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         holder.buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                app.getHttpRequest().post("request/finish/", null, new Response.Listener<String>() {
+                final Dialog dialog = new Dialog(activity);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_token);
 
+                EditText editTextToken = (EditText) dialog.findViewById(R.id.editTextToken);
+                Button buttonSubmit = (Button) dialog.findViewById(R.id.buttonSubmit);
+
+                buttonSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onClick(View v) {
 
-                        app.getHttpRequest().get("request/get_quest/Inprogress/" + app.getPreferences().getString(Preferences.KEY_USERID), null, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                ArrayList<Request> requests = Request.getLists(response);
-                                if (requests.size() > 0) {
-                                    Toast.makeText(activity.getApplicationContext(), "Another quest(s) left, still not stop tracking.", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    HashMap<String, String> params = new HashMap<String, String>();
-                                    params.put("type", "0");
-                                    params.put("signal", "102");
-                                    params.put("title", "");
-                                    params.put("content", "");
-                                    params.put("user_id", app.getPreferences().getString(Preferences.KEY_USERID));
-                                    app.getHttpRequest().post("gcm/push/", params, new Response.Listener<String>() {
-
+                        // TODO Check token
+                        if (true) {
+                            HashMap<String, String> params = new HashMap<String, String>();
+                            params.put("_id", requests.get(position).get_id());
+                            app.getHttpRequest().post("request/finish/", params, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    app.getHttpRequest().get("request/get_quest/Inprogress/" + app.getPreferences().getString(Preferences.KEY_USERID), null, new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
-                                            Toast.makeText(activity.getApplicationContext(), "Stop tracking commanded...", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }, new Response.ErrorListener() {
+                                            ArrayList<Request> requests = Request.getLists(response);
+                                            if (requests.size() > 0) {
+                                                Toast.makeText(activity.getApplicationContext(), "Another quest(s) left, still not stop tracking.", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                HashMap<String, String> params = new HashMap<String, String>();
+                                                params.put("type", "0");
+                                                params.put("signal", "102");
+                                                params.put("title", "");
+                                                params.put("content", "");
+                                                params.put("user_id", app.getPreferences().getString(Preferences.KEY_USERID));
+                                                app.getHttpRequest().post("gcm/push/", params, new Response.Listener<String>() {
 
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        Toast.makeText(activity.getApplicationContext(), "Stop tracking commanded...", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }, new Response.ErrorListener() {
+
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
                                         }
                                     });
+                                    Log.d("my response tag", "onResponse: " + response);
                                 }
-                            }
-                        });
+                            }, new Response.ErrorListener() {
 
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                        Log.d("my error response tag", "onErrorResponse: " + error);
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                                    Log.d("my error response tag", "onErrorResponse: " + error);
+                                }
+                            });
+                        }
                     }
                 });
+
+                dialog.show();
             }
         });
 

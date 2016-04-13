@@ -2,14 +2,12 @@ package com.kubkn.rorpap.view;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,7 +31,7 @@ import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private String[] mDrawerTitle = {"My Quest", "Map", "Profile", "Log out"};
+    private String[] mDrawerTitle = {"Find Request", "Messenger", "Map", "Profile", "Log out"};
     private DrawerLayout mDrawerLayout;
     private ListView mListView;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -74,18 +72,23 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent intent;
                 switch (position) {
                     case 0:
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent = new Intent(getApplicationContext(), FindRequestActivity.class);
                         startActivity(intent);
                         finish();
                         break;
                     case 1:
-                        intent = new Intent(getApplicationContext(), MapActivity.class);
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finish();
                         break;
                     case 2:
+                        intent = new Intent(getApplicationContext(), MapActivity.class);
+                        startActivity(intent);
+                        finish();
                         break;
                     case 3:
+                        break;
+                    case 4:
                         app.getPreferences().remove(Preferences.KEY_USERID);
                         intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
