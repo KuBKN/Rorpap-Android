@@ -15,6 +15,10 @@ import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
 import com.kubkn.rorpap.view.RequestsAdapter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 /**
  * Created by batmaster on 4/5/16 AD.
  */
@@ -37,11 +41,11 @@ public class MyQuest extends Fragment {
             @Override
             public void onResponse(String response) {
                 if ((RequestsAdapter) recyclerView.getAdapter() == null) {
-                    adapter = new RequestsAdapter(getActivity(), Request.getLists(response), RequestsAdapter.MY_QUEST);
+                    adapter = new RequestsAdapter(getActivity(), SortRequest(Request.getLists(response)), RequestsAdapter.MY_QUEST);
                     recyclerView.setAdapter(adapter);
                 }
                 else {
-                    ((RequestsAdapter) recyclerView.getAdapter()).addRequests(Request.getLists(response));
+                    ((RequestsAdapter) recyclerView.getAdapter()).addRequests(SortRequest(Request.getLists(response)));
                     recyclerView.getAdapter().notifyDataSetChanged();
                 }
             }
@@ -50,16 +54,26 @@ public class MyQuest extends Fragment {
             @Override
             public void onResponse(String response) {
                 if ((RequestsAdapter) recyclerView.getAdapter() == null) {
-                    adapter = new RequestsAdapter(getActivity(), Request.getLists(response), RequestsAdapter.MY_QUEST);
+                    adapter = new RequestsAdapter(getActivity(), SortRequest(Request.getLists(response)), RequestsAdapter.MY_QUEST);
                     recyclerView.setAdapter(adapter);
                 }
                 else {
-                    ((RequestsAdapter) recyclerView.getAdapter()).addRequests(Request.getLists(response));
+                    ((RequestsAdapter) recyclerView.getAdapter()).addRequests(SortRequest(Request.getLists(response)));
                     recyclerView.getAdapter().notifyDataSetChanged();
                 }
             }
         });
 
         return view;
+    }
+
+    private ArrayList<Request> SortRequest(ArrayList<Request> listToBeSort){
+        Collections.sort(listToBeSort, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return rhs.get_id().compareTo(lhs.get_id());
+            }
+        });
+        return listToBeSort;
     }
 }
