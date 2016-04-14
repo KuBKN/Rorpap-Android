@@ -36,18 +36,22 @@ public class Request {
     private String price;
     private String comment;
 
+    private JSONObject jsonObject;
+
     public Request(String jsonString) {
         try {
             JSONArray ja = new JSONArray(jsonString);
             JSONObject jo = ja.getJSONObject(0);
+            jsonObject = jo;
             load(jo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public Request(JSONObject jsonObject) {
-        load(jsonObject);
+    public Request(JSONObject jo) {
+        jsonObject = jo;
+        load(jo);
     }
 
     private void load(JSONObject jo) {
@@ -55,7 +59,7 @@ public class Request {
 
         try {
             _id = jo.has("_id") ? jo.getString("_id") : "";
-            sender_id = jo.has("_id") ? jo.getString("_id") : "";
+            sender_id = jo.has("sender_id") ? jo.getString("sender_id") : "";
             messenger_id = jo.has("messenger_id") ? jo.getString("messenger_id") : "";
 
             recipient_name = jo.has("recipient_name") ? jo.getString("recipient_name") : "";
@@ -265,5 +269,14 @@ public class Request {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String toString(){
+        String resultString = "_id: " + get_id() + " sender_id: " + getSender_id() + " messenger_id: " + getMessenger_id();
+        return resultString;
+    }
+
+    public JSONObject getJsonObject(){
+        return jsonObject;
     }
 }
