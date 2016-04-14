@@ -264,35 +264,35 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             holder.buttonGroupMyQuestPending.setVisibility(View.GONE);
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
-            holder.buttonGroupMyQuestInpregress.setVisibility(View.GONE);
+            holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
         } else if (cardType == MY_REQUEST && requests.get(position).getType().equals("Pending")) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#FF4081"));
             holder.buttonGroupMyRequestPending.setVisibility(View.VISIBLE);
             holder.buttonGroupMyQuestPending.setVisibility(View.GONE);
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
-            holder.buttonGroupMyQuestInpregress.setVisibility(View.GONE);
+            holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
         } else if (cardType == MY_QUEST && requests.get(position).getType().equals("Pending")) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#FF4081"));
             holder.buttonGroupMyRequestPending.setVisibility(View.GONE);
             holder.buttonGroupMyQuestPending.setVisibility(View.VISIBLE);
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
-            holder.buttonGroupMyQuestInpregress.setVisibility(View.GONE);
+            holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
         } else if (cardType == MY_REQUEST && requests.get(position).getType().equals("Reserved")) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#FFE082"));
             holder.buttonGroupMyRequestPending.setVisibility(View.GONE);
             holder.buttonGroupMyQuestPending.setVisibility(View.GONE);
             holder.buttonGroupMyRequestReserved.setVisibility(View.VISIBLE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
-            holder.buttonGroupMyQuestInpregress.setVisibility(View.GONE);
+            holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
         } else if (cardType == MY_QUEST && requests.get(position).getType().equals("Reserved")) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#FFE082"));
             holder.buttonGroupMyRequestPending.setVisibility(View.GONE);
             holder.buttonGroupMyQuestPending.setVisibility(View.GONE);
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.VISIBLE);
-            holder.buttonGroupMyQuestInpregress.setVisibility(View.GONE);
+            holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
         }
         else if (cardType == MY_QUEST && requests.get(position).getType().equals("Inprogress")) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#42A5F5"));
@@ -300,7 +300,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             holder.buttonGroupMyQuestPending.setVisibility(View.GONE);
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
-            holder.buttonGroupMyQuestInpregress.setVisibility(View.VISIBLE);
+            holder.buttonGroupMyQuestInprogress.setVisibility(View.VISIBLE);
         }
         else if (cardType == MY_QUEST && requests.get(position).getType().equals("Finished")) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#00E676"));
@@ -308,7 +308,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             holder.buttonGroupMyQuestPending.setVisibility(View.GONE);
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
-            holder.buttonGroupMyQuestInpregress.setVisibility(View.GONE);
+            holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
         }
 
 
@@ -342,7 +342,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         public LinearLayout buttonGroupMyQuestPending;
         public LinearLayout buttonGroupMyRequestReserved;
         public LinearLayout buttonGroupMyQuestReserved;
-        public LinearLayout buttonGroupMyQuestInpregress;
+        public LinearLayout buttonGroupMyQuestInprogress;
+        public LinearLayout buttonGroupCancel;
+        public LinearLayout buttonGroupShowMap;
 
         public Button buttonEdit;
         public Button buttonRemove;
@@ -350,6 +352,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         public Button buttonSend;
         public Button buttonStart;
         public Button buttonFinish;
+        public Button buttonMap;
+        public Button buttonCancel;
 
         public ViewHolder(View view) {
             super(view);
@@ -374,7 +378,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             buttonGroupMyQuestPending = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestPending);
             buttonGroupMyRequestReserved = (LinearLayout) view.findViewById(R.id.buttonGroupMyRequestReserved);
             buttonGroupMyQuestReserved = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestReserved);
-            buttonGroupMyQuestInpregress = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestInprogress);
+            buttonGroupMyQuestInprogress = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestInprogress);
+            buttonGroupCancel = (LinearLayout) view.findViewById(R.id.buttonGroupCancel);
+            buttonGroupShowMap = (LinearLayout) view.findViewById(R.id.buttonGroupShowMap);
 
             buttonEdit = (Button) view.findViewById(R.id.buttonEdit);
             buttonRemove = (Button) view.findViewById(R.id.buttonRemove);
@@ -382,6 +388,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             buttonSend = (Button) view.findViewById(R.id.buttonSend);
             buttonStart = (Button) view.findViewById(R.id.buttonStart);
             buttonFinish = (Button) view.findViewById(R.id.buttonFinish);
+            buttonCancel = (Button) view.findViewById(R.id.buttonCancel);
+            buttonMap = (Button) view.findViewById(R.id.buttonMap);
 
         }
     }
