@@ -2,6 +2,8 @@ package com.kubkn.rorpap.view;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -255,6 +257,20 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                 });
 
                 dialog.show();
+            }
+        });
+
+        holder.buttonMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = app.getApplicationContext();
+                Intent intent = new Intent(context, MapActivity.class);
+                ArrayList<String> requestLocations = new ArrayList<String>();
+                requestLocations.add(requests.get(position).getFromLoc());
+                requestLocations.add(requests.get(position).getToLoc());
+                intent.putStringArrayListExtra("Request locations", requestLocations);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         });
 
