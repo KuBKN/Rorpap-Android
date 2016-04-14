@@ -32,7 +32,7 @@ public class FindRequest extends Fragment {
         RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();
         String sender_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
-        app.getHttpRequest().get("request/get_request/Pending/!" + sender_id, null, new Response.Listener<String>() {
+        app.getHttpRequest().get("request/get_quest/Pending/!" + sender_id, null, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 RequestsAdapter adapter = new RequestsAdapter(getActivity(), Request.getLists(response), RequestsAdapter.MY_QUEST);

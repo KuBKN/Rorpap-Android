@@ -374,7 +374,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             buttonGroupMyQuestPending = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestPending);
             buttonGroupMyRequestReserved = (LinearLayout) view.findViewById(R.id.buttonGroupMyRequestReserved);
             buttonGroupMyQuestReserved = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestReserved);
-            buttonGroupMyQuestInpregress = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestInpregress);
+            buttonGroupMyQuestInpregress = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestInprogress);
 
             buttonEdit = (Button) view.findViewById(R.id.buttonEdit);
             buttonRemove = (Button) view.findViewById(R.id.buttonRemove);
