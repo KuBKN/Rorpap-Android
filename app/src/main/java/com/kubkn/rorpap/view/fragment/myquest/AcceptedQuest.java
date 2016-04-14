@@ -75,7 +75,7 @@ public class AcceptedQuest extends Fragment {
                 Collections.sort(acceptedRequestList, new Comparator<Request>() {
                     @Override
                     public int compare(Request lhs, Request rhs) {
-                        return lhs.get_id().compareTo(rhs.get_id());
+                        return rhs.get_id().compareTo(lhs.get_id());
                     }
                 });
                 RequestsAdapter adapter = new RequestsAdapter(getActivity(), acceptedRequestList, RequestsAdapter.MY_QUEST);
