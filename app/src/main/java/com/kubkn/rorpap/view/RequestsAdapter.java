@@ -348,7 +348,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         return requests.size();
     }
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public CardView cardView;

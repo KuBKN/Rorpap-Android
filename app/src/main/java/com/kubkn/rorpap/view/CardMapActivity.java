@@ -3,6 +3,7 @@ package com.kubkn.rorpap.view;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,6 +26,8 @@ public class CardMapActivity extends AppCompatActivity implements OnMapReadyCall
     private SupportMapFragment mapFragment;
 
     private ArrayList<String> requests;
+
+    private Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class CardMapActivity extends AppCompatActivity implements OnMapReadyCall
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
     }
 
     @Override
@@ -81,6 +86,9 @@ public class CardMapActivity extends AppCompatActivity implements OnMapReadyCall
                 .position(to)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
                 .title(recipientName));
+
+        backButton = (Button) findViewById(R.id.buttonBack);
+        backButton.bringToFront();
     }
 
     @Override
