@@ -276,7 +276,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                 String caller = "";
                 if(requestType.equals("Pending")){
                     if(!RequestsAdapter.this.requests.get(position).isHasAccept() && !RequestsAdapter.this.requests.get(position).getSender_id().equals(app.getPreferences().getString(Preferences.KEY_USERID))){
-                        caller = "com.kubkn.rorpap.view.MainActivityFindRequestActivity";
+                        caller = "com.kubkn.rorpap.view.FindRequestActivity";
                     }
                     else{
                         caller = "com.kubkn.rorpap.view.MainActivity";
