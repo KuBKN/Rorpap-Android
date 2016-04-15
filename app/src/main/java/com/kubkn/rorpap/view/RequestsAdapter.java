@@ -264,16 +264,17 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Context context = app.getApplicationContext();
-                Intent intent = new Intent(context, MapActivity.class);
-                ArrayList<String> requestLocations = new ArrayList<String>();
-                requestLocations.add(requests.get(position).getFromLoc());
-                requestLocations.add(requests.get(position).getToLoc());
-                intent.putStringArrayListExtra("Request locations", requestLocations);
+                Intent intent = new Intent(context, CardMapActivity.class);
+                ArrayList<String> requests = new ArrayList<String>();
+                requests.add(RequestsAdapter.this.requests.get(position).getFromLoc());
+                requests.add(RequestsAdapter.this.requests.get(position).getToLoc());
+                requests.add(RequestsAdapter.this.requests.get(position).getSender_id());
+                requests.add(RequestsAdapter.this.requests.get(position).getRecipient_name());
+                intent.putStringArrayListExtra("Request locations", requests);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
-
 
         if (cardType == UNKNOWN) {
             holder.buttonGroupMyRequestPending.setVisibility(View.GONE);
