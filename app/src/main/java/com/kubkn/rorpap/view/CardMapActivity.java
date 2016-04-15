@@ -1,5 +1,6 @@
 package com.kubkn.rorpap.view;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -98,7 +99,12 @@ public class CardMapActivity extends AppCompatActivity implements OnMapReadyCall
                 try {
                     String caller = getIntent().getStringExtra("caller");
                     Class callerClass = Class.forName(caller);
+                    int caller_fragment = getIntent().getIntExtra("caller_fragment", -1);
+
+
                     Intent intent = new Intent(getApplicationContext(), callerClass);
+                    Fragment fragment = getFragmentManager().findFragmentById(caller_fragment);
+//                    fragment.startActivity(intent);
                     startActivity(intent);
                     finish();
                 } catch (Exception e){

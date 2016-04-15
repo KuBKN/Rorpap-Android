@@ -34,7 +34,7 @@ public class AcceptedQuest extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_myquest_acceptedquest, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.acceptedquest);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         final RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();

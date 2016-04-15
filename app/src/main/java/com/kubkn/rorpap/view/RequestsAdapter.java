@@ -274,27 +274,36 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
 
                 String requestType = RequestsAdapter.this.requests.get(position).getType();
                 String caller = "";
+                int caller_fragment = 0;
                 if(requestType.equals("Pending")){
                     if(!RequestsAdapter.this.requests.get(position).isHasAccept() && !RequestsAdapter.this.requests.get(position).getSender_id().equals(app.getPreferences().getString(Preferences.KEY_USERID))){
                         caller = "com.kubkn.rorpap.view.FindRequestActivity";
+                        caller_fragment = R.id.findrequest;
                     }
                     else{
                         caller = "com.kubkn.rorpap.view.MainActivity";
+                        caller_fragment = R.id.acceptedquest;
                     }
                 }
                 else if(requestType.equals("Reserved")){
                     caller = "com.kubkn.rorpap.view.MainActivity";
+                    caller_fragment = R.id.myquest;
                 }
                 else if(requestType.equals("Inprogress")){
                     caller = "com.kubkn.rorpap.view.MainActivity";
+                    caller_fragment = R.id.myquest;
                 }
                 else if(requestType.equals("Finished")){
                     caller = "com.kubkn.rorpap.view.MainActivity";
+                    caller_fragment = R.id.history;
                 }
                 else{
                     caller = "com.kubkn.rorpap.view.MainActivity";
+                    caller_fragment = R.id.acceptedquest;
                 }
                 intent.putExtra("caller", caller);
+               // intent.putExtra("caller_fragment", caller_fragment);
+                intent.putExtra("caller_fragment", caller_fragment);
                 Log.d("caller", caller);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);

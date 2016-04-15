@@ -30,7 +30,7 @@ public class FindRequest extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myquest_findrequest, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.findrequest);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();

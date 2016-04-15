@@ -31,7 +31,7 @@ public class MyQuest extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myquest_myquest, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.myquest);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();

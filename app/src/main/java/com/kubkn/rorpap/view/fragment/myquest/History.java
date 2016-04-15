@@ -30,7 +30,7 @@ public class History extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myquest_history, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.history);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();
