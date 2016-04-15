@@ -41,11 +41,11 @@ public class CardMapActivity extends AppCompatActivity implements OnMapReadyCall
                 requests = null;
             }
             else{
-                requests = extras.getStringArrayList("Request locations");
+                requests = extras.getStringArrayList("Requests");
             }
         }
         else{
-            requests = (ArrayList<String>) savedInstanceState.getSerializable("Request locations");
+            requests = (ArrayList<String>) savedInstanceState.getSerializable("Requests");
         }
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);

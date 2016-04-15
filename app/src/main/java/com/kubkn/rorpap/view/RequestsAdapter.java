@@ -270,7 +270,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                 requests.add(RequestsAdapter.this.requests.get(position).getToLoc());
                 requests.add(RequestsAdapter.this.requests.get(position).getSender_id());
                 requests.add(RequestsAdapter.this.requests.get(position).getRecipient_name());
-                intent.putStringArrayListExtra("Request locations", requests);
+                intent.putStringArrayListExtra("Requests", requests);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
