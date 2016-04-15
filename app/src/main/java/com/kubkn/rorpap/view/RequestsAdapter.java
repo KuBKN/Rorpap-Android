@@ -340,8 +340,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             holder.buttonGroupCancel.setVisibility(View.GONE);
             holder.buttonGroupShowMap.setVisibility(View.VISIBLE);
         }
-
-
     }
 
     @Override

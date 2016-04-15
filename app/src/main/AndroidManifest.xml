@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MainActivity"></activity>
+        <activity android:name=".view.MainActivity" />
         <activity android:name=".view.ProfileActivity" />
         <activity android:name=".view.MapActivity" />
 
@@ -57,7 +57,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.FindRequestActivity"></activity>
+        <activity android:name=".view.FindRequestActivity" />
+        <activity
+            android:name=".view.CardMapActivity"
+            android:label="@string/title_activity_card_map"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
