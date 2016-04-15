@@ -271,6 +271,31 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                 requests.add(RequestsAdapter.this.requests.get(position).getSender_id());
                 requests.add(RequestsAdapter.this.requests.get(position).getRecipient_name());
                 intent.putStringArrayListExtra("Requests", requests);
+
+                String requestType = RequestsAdapter.this.requests.get(position).getType();
+                String caller = "";
+                if(requestType.equals("Pending")){
+                    if(!RequestsAdapter.this.requests.get(position).isHasAccept() && !RequestsAdapter.this.requests.get(position).getSender_id().equals(app.getPreferences().getString(Preferences.KEY_USERID))){
+                        caller = "com.kubkn.rorpap.view.MainActivityFindRequestActivity";
+                    }
+                    else{
+                        caller = "com.kubkn.rorpap.view.MainActivity";
+                    }
+                }
+                else if(requestType.equals("Reserved")){
+                    caller = "com.kubkn.rorpap.view.MainActivity";
+                }
+                else if(requestType.equals("Inprogress")){
+                    caller = "com.kubkn.rorpap.view.MainActivity";
+                }
+                else if(requestType.equals("Finished")){
+                    caller = "com.kubkn.rorpap.view.MainActivity";
+                }
+                else{
+                    caller = "com.kubkn.rorpap.view.MainActivity";
+                }
+                intent.putExtra("caller", caller);
+                Log.d("caller", caller);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }

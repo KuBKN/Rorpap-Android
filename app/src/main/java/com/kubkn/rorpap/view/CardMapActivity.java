@@ -1,8 +1,11 @@
 package com.kubkn.rorpap.view;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.location.LocationListener;
@@ -89,6 +92,21 @@ public class CardMapActivity extends AppCompatActivity implements OnMapReadyCall
 
         backButton = (Button) findViewById(R.id.buttonBack);
         backButton.bringToFront();
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String caller = getIntent().getStringExtra("caller");
+                    Class callerClass = Class.forName(caller);
+                    Intent intent = new Intent(getApplicationContext(), callerClass);
+                    startActivity(intent);
+                    finish();
+                } catch (Exception e){
+                    Log.d("Class not found", "Class not found exception");
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
