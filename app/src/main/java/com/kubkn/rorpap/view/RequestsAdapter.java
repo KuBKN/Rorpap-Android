@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,7 +68,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
 //            holder.imageView
         holder.textViewReceiver.setText(requests.get(position).getRecipient_name());
-        holder.textViewXMessenger.setText("whereToGetFrom?");
+        holder.textViewXMessenger.setText(".");
         holder.textViewDueDate.setText(requests.get(position).getShipLimitDate());
         holder.textViewDueTime.setText(requests.get(position).getShipLimitTime());
         holder.textViewEmail.setText(requests.get(position).getRecipient_email());
@@ -110,20 +108,11 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         holder.buttonAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder adb = new AlertDialog.Builder(activity);
-                Dialog dialog = adb.setView(new View(activity)).create();
-                //
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(dialog.getWindow().getAttributes());
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+                final Dialog dialog = new Dialog(activity);
 
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_date_time);
-//                dialog.show();
-//                dialog.getWindow().setAttributes(lp);
-                //
-
 
                 final EditText editTextTime = (EditText) dialog.findViewById(R.id.editTextTime);
 
@@ -139,35 +128,28 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                         HashMap<String, String> params = new HashMap<String, String>();
                         params.put("time", time);
                         params.put("date", date);
-                        app.getHttpRequest().post("acceptance/add/" + app.getPreferences().getString(Preferences.KEY_USERID) + "/" + requests.get(position).get_id(), params, new Response.Listener<String>() {
+                        String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
+                        app.getHttpRequest().post("acceptance/add/" + messenger_id + "/" + requests.get(position).get_id(), params, new Response.Listener<String>() {
+
                             @Override
                             public void onResponse(String response) {
+                                Log.d("my response tag", "onResponse: " + response);
+                                Toast.makeText(activity.getApplicationContext(), "Acceptance Request has been submitted", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        }, new Response.ErrorListener() {
 
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                                Log.d("my error response tag", "onErrorResponse: " + error);
                             }
                         });
 
                     }
                 });
 
-                dialog.show(); //this line throws error
-                dialog.getWindow().setAttributes(lp);
-
-                String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
-                app.getHttpRequest().post("acceptance/add/" + messenger_id + "/" + requests.get(position).get_id(), null, new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("my response tag", "onResponse: " + response);
-                        Toast.makeText(activity.getApplicationContext(), "Acceptance Request has been submitted", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                        Log.d("my error response tag", "onErrorResponse: " + error);
-                    }
-                });
+                dialog.show();
             }
         });
 
