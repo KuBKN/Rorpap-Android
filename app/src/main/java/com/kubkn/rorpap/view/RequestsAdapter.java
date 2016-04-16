@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -108,6 +110,48 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         holder.buttonAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AlertDialog.Builder adb = new AlertDialog.Builder(activity);
+                Dialog dialog = adb.setView(new View(activity)).create();
+                //
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_date_time);
+//                dialog.show();
+//                dialog.getWindow().setAttributes(lp);
+                //
+
+
+                final EditText editTextTime = (EditText) dialog.findViewById(R.id.editTextTime);
+
+                final EditText editTextDate = (EditText) dialog.findViewById(R.id.editTextDate);
+
+                Button buttonSubmit = (Button) dialog.findViewById(R.id.buttonSubmit);
+                buttonSubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String time = editTextTime.getText().toString();
+                        String date = editTextDate.getText().toString();
+
+                        HashMap<String, String> params = new HashMap<String, String>();
+                        params.put("time", time);
+                        params.put("date", date);
+                        app.getHttpRequest().post("acceptance/add/" + app.getPreferences().getString(Preferences.KEY_USERID) + "/" + requests.get(position).get_id(), params, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+
+                            }
+                        });
+
+                    }
+                });
+
+                dialog.show(); //this line throws error
+                dialog.getWindow().setAttributes(lp);
+
                 String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
                 app.getHttpRequest().post("acceptance/add/" + messenger_id + "/" + requests.get(position).get_id(), null, new Response.Listener<String>() {
 
