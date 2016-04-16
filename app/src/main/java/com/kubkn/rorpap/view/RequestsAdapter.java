@@ -125,8 +125,11 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                         String time = editTextTime.getText().toString();
                         String date = editTextDate.getText().toString();
 
+                        String[] timearr = time.split(":");
+
                         HashMap<String, String> params = new HashMap<String, String>();
-                        params.put("time", time);
+                        params.put("hour", timearr[0]);
+                        params.put("min", timearr[1]);
                         params.put("date", date);
                         String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
                         app.getHttpRequest().post("acceptance/add/" + messenger_id + "/" + requests.get(position).get_id(), params, new Response.Listener<String>() {
