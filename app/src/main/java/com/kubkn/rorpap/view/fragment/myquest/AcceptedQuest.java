@@ -36,11 +36,12 @@ public class AcceptedQuest extends Fragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.acceptedquest);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Log.d("recyclerView", recyclerView.toString());
 
-        final RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();
+        RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();
         String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
-        requestIDAcceptedSet = new HashSet<String>();
+        requestIDAcceptedSet = new HashSet<>();
 
         app.getHttpRequest().get("acceptance/getbymess/" + messenger_id, null, new Response.Listener<String>() {
             @Override
@@ -51,7 +52,7 @@ public class AcceptedQuest extends Fragment {
                     Log.d("REQUEST", req.toString());
                     JSONObject jsonObject = req.getJsonObject();
                     String request_id = extractJSONInformation(jsonObject, "request_id");
-                    if(!request_id.equals("")){
+                    if (!request_id.equals("")) {
                         requestIDAcceptedSet.add(request_id);
                     }
                 }
@@ -63,22 +64,30 @@ public class AcceptedQuest extends Fragment {
             public void onResponse(String response) {
                 ArrayList<Request> requestList = Request.getLists(response);
                 ArrayList<Request> acceptedRequestList = new ArrayList<Request>();
+                Log.d("it reach here", "it reach here");
                 for(Request req : requestList){
                     JSONObject jsonObject = req.getJsonObject();
                     String request_id = extractJSONInformation(jsonObject, "_id");
+                    Log.d("request_id", request_id);
                     for(String reqID : requestIDAcceptedSet){
                         if(request_id.equals(reqID)){
                             acceptedRequestList.add(req);
                         }
                     }
                 }
+                Log.d("it reach here1", "it reach here1");
                 Collections.sort(acceptedRequestList, new Comparator<Request>() {
                     @Override
                     public int compare(Request lhs, Request rhs) {
                         return rhs.get_id().compareTo(lhs.get_id());
                     }
                 });
+                Log.d("it reach here2", "it reach here2");
                 RequestsAdapter adapter = new RequestsAdapter(getActivity(), acceptedRequestList, RequestsAdapter.MY_QUEST);
+                for(Request req : acceptedRequestList){
+                    Log.d("req.getRecipient_name()", req.getRecipient_name());
+                }
+                Log.d("it reach here3", "it reach here3");
                 recyclerView.setAdapter(adapter);
             }
         });

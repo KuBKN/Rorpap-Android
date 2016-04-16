@@ -114,6 +114,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                     @Override
                     public void onResponse(String response) {
                         Log.d("my response tag", "onResponse: " + response);
+                        Toast.makeText(activity.getApplicationContext(), "Acceptance Request has been submitted", Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
 
@@ -140,7 +141,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_token);
 
-                EditText editTextToken = (EditText) dialog.findViewById(R.id.editTextToken);
+                final EditText editTextToken = (EditText) dialog.findViewById(R.id.editTextToken);
 
                 Button buttonSubmit = (Button) dialog.findViewById(R.id.buttonSubmit);
                 buttonSubmit.setOnClickListener(new View.OnClickListener() {
@@ -148,8 +149,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                     public void onClick(View v) {
 
                         String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
-                        // TODO Check token
-                        if (true) {
+
+                        String rtoken = requests.get(position).getSender_id().substring(requests.get(position).getSender_id().length()-2)+requests.get(position).get_id().substring(requests.get(position).get_id().length() - 2);
+
+                        if (editTextToken.getText().toString().equals(rtoken)) {
                             app.getHttpRequest().post("request/accept/" + messenger_id + "/" + requests.get(position).get_id(), null, new Response.Listener<String>() {
 
                                 @Override
@@ -167,6 +170,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                         @Override
                                         public void onResponse(String response) {
                                             Toast.makeText(activity.getApplicationContext(), "Start tracking commanded...", Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
                                         }
                                     }, new Response.ErrorListener() {
 
@@ -176,6 +180,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                         }
                                     });
 
+
+
                                 }
                             }, new Response.ErrorListener() {
 
@@ -184,6 +190,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                     Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                                 }
                             });
+                        }else{
+                            Toast.makeText(activity.getApplicationContext(), "Wrong Start Token", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -199,15 +207,14 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_token);
 
-                EditText editTextToken = (EditText) dialog.findViewById(R.id.editTextToken);
+                final EditText editTextToken = (EditText) dialog.findViewById(R.id.editTextToken);
                 Button buttonSubmit = (Button) dialog.findViewById(R.id.buttonSubmit);
 
                 buttonSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        // TODO Check token
-                        if (true) {
+                        if (editTextToken.getText().toString().equals("Send")) {
                             HashMap<String, String> params = new HashMap<String, String>();
                             params.put("_id", requests.get(position).get_id());
                             app.getHttpRequest().post("request/finish/", params, new Response.Listener<String>() {
@@ -252,6 +259,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                     Log.d("my error response tag", "onErrorResponse: " + error);
                                 }
                             });
+                        } else{
+                            Toast.makeText(activity.getApplicationContext(), "Wrong Finish Token", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
