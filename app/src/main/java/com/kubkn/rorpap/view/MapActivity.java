@@ -187,7 +187,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     googleMap.addMarker(new MarkerOptions()
                             .position(to)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
-                            .title(requests.get(i).getRecipient_name()));
+                            .title(requests.get(i).getRecipient_name())
+                            .snippet(requests.get(i).getShipLimitDate() + " " + requests.get(i).getShipLimitHour() + ":" + requests.get(i).getShipLimitTime()));
                 }
             }
         });
