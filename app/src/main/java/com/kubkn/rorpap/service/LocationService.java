@@ -1,6 +1,5 @@
 package com.kubkn.rorpap.service;
 
-import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,13 +8,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
-import com.kubkn.rorpap.model.User;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +33,7 @@ public class LocationService extends Service {
         Log.d("pushno loc", "onStartCommand");
 
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3 * 1000, 10, listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60 * 1000, 500, listener);
 
         Toast.makeText(getApplicationContext(), "GPS onStartCommand", Toast.LENGTH_SHORT).show();
 
