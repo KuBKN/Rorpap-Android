@@ -10,40 +10,39 @@
     android:paddingTop="5dp"
     tools:context=".view.MainActivity">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cardView"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardUseCompatPadding="true"
-        card_view:cardCornerRadius="8dp">
+        android:layout_gravity="center"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardUseCompatPadding="true">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:padding="5dp">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/imageView"
                     android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:id="@+id/imageView" />
+                    android:layout_height="80dp" />
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -51,53 +50,55 @@
                             android:text="To: " />
 
                         <TextView
+                            android:id="@+id/textViewReceiver"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:text="Receiver"
-                            android:id="@+id/textViewReceiver" />
+                            android:text="Receiver" />
 
                         <TextView
+                            android:id="@+id/textViewXMessenger"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:text="X Messenger"
-                            android:id="@+id/textViewXMessenger" />
+                            android:text="X Messenger" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Due Date: " />
 
                             <TextView
+                                android:id="@+id/textViewDueDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Due Date"
-                                android:id="@+id/textViewDueDate" />
+                                android:text="Due Date" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Due Time: " />
 
                             <TextView
+                                android:id="@+id/textViewDueTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Due Time"
-                                android:id="@+id/textViewDueTime" />
+                                android:text="Due Time" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -106,9 +107,9 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -116,17 +117,17 @@
                     android:text="Email: " />
 
                 <TextView
+                    android:id="@+id/textViewEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="Email"
-                    android:id="@+id/textViewEmail" />
+                    android:text="Email" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -134,11 +135,11 @@
                     android:text="Price: " />
 
                 <TextView
+                    android:id="@+id/textViewPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="Price"
-                    android:id="@+id/textViewPrice" />
+                    android:text="Price" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -147,9 +148,9 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -157,18 +158,18 @@
                     android:text="Tel: " />
 
                 <TextView
+                    android:id="@+id/textViewTel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="Tel"
-                    android:id="@+id/textViewTel" />
+                    android:text="Tel" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -176,18 +177,18 @@
                     android:text="Due in: " />
 
                 <TextView
+                    android:id="@+id/textViewDue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="Due"
-                    android:id="@+id/textViewDue" />
+                    android:text="Due" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayoutSender"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -195,126 +196,159 @@
                     android:text="Sender: " />
 
                 <TextView
+                    android:id="@+id/textViewSender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sender"
-                    android:id="@+id/textViewSender" />
+                    android:text="Sender" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Comment: " />
+
                 <TextView
+                    android:id="@+id/textViewComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Comment"
-                    android:id="@+id/textViewComment" />
+                    android:text="Comment" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonGroupMyRequestPending"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right">
+                android:weightSum="2"
+                android:orientation="horizontal">
 
-                <Button
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="EDIT"
-                    android:id="@+id/buttonEdit" />
+                    android:gravity="left"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/buttonEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EDIT" />
+                </LinearLayout>
 
-                <Button
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="CANCEL"
-                    android:id="@+id/buttonCancel" />
+                    android:gravity="right"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/buttonCancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CANCEL" />
+                </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonGroupMyQuestPending"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right">
+                android:gravity="right"
+                android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/buttonAccept"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ACCEPT"
-                    android:id="@+id/buttonAccept"
-                    android:onClick="acceptRequest"/>
+                    android:onClick="acceptRequest"
+                    android:text="ACCEPT" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonGroupMyRequestReserved"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right">
+                android:gravity="right"
+                android:orientation="horizontal">
 
                 <!-- THIS BUTTON SEEMS NOT TO BE USED -->
                 <Button
+                    android:id="@+id/buttonSend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SEND!!"
-                    android:id="@+id/buttonSend" />
+                    android:text="SEND!!" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonGroupMyQuestReserved"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <Button
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="START SHIPPING"
-                    android:id="@+id/buttonStart" />
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:layout_weight="1">
 
-                <Button
-                    android:layout_width="wrap_content"
+                    <Button
+                        android:id="@+id/buttonStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="START SHIPPING" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="CANCEL1"
-                    android:id="@+id/buttonCancel1" />
+                    android:orientation="horizontal"
+                    android:gravity="right"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/buttonCancel1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CANCEL1" />
+                </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonGroupMyQuestInprogress"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right">
+                android:gravity="right"
+                android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/buttonFinish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Finish"
-                    android:id="@+id/buttonFinish" />
+                    android:text="Finish" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/buttonGroupShowMap"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <Button
+                    android:id="@+id/buttonMap"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="MAP"
-                    android:id="@+id/buttonMap" />
+                    android:text="MAP" />
             </LinearLayout>
 
         </LinearLayout>
