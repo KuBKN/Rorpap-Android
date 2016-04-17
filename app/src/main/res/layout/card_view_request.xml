@@ -232,8 +232,8 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="REMOVE"
-                    android:id="@+id/buttonRemove" />
+                    android:text="CANCEL"
+                    android:id="@+id/buttonCancel" />
 
             </LinearLayout>
 
@@ -260,6 +260,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right">
 
+                <!-- THIS BUTTON SEEMS NOT TO BE USED -->
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -281,6 +282,12 @@
                     android:text="START SHIPPING"
                     android:id="@+id/buttonStart" />
 
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CANCEL1"
+                    android:id="@+id/buttonCancel1" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -296,18 +303,12 @@
                     android:text="Finish"
                     android:id="@+id/buttonFinish" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/buttonGroupCancel"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="CANCEL"
-                    android:id="@+id/buttonCancel" />
+                    android:text="CANCEL2"
+                    android:id="@+id/buttonCancel2" />
+
             </LinearLayout>
 
             <LinearLayout
