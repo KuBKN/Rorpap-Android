@@ -107,48 +107,42 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                             @Override
                             public void onResponse(String response) {
                                 ArrayList<Acceptance> acceptanceList = Acceptance.getLists(response);
-
-                                for (Acceptance acc : acceptanceList) {
-                                    JSONObject jsonObject = acc.getJsonObject();
-
-                                    String request_id = extractJSONInformation(jsonObject, "request_id");
-
-                                    if(requests.get(position).get_id().equals(request_id) && acc.getMessenger_id().equals(messenger_id)){
-                                        accept_id = acc.get_id();
-                                        Log.d("req.get_id()", accept_id);
+                                Acceptance acceptance = null;
+                                for (int i = 0; i < acceptanceList.size(); i++) {
+                                    if (requests.get(position).get_id().equals(acceptanceList.get(i).getRequest_id())) {
+                                        acceptance = acceptanceList.get(i);
+                                        break;
                                     }
-                                    break;
                                 }
-                            }
-                        });
-                        Log.d("accept_id", accept_id);
 
-                        String time = editTextTime.getText().toString();
-                        String date = editTextDate.getText().toString();
+                                String time = editTextTime.getText().toString();
+                                String date = editTextDate.getText().toString();
 
-                        String[] timearr = time.split(":");
+                                String[] timearr = time.split(":");
 
-                        HashMap<String, String> params = new HashMap<String, String>();
-                        params.put("hour", timearr[0]);
-                        params.put("min", timearr[1]);
-                        params.put("date", date);
+                                HashMap<String, String> params = new HashMap<String, String>();
+                                params.put("hour", timearr[0]);
+                                params.put("min", timearr[1]);
+                                params.put("date", date);
 //                        String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
 //                        String request_id = requests.get(position).get_id();
 
-                        app.getHttpRequest().post("acceptance/edit/" + accept_id, params, new Response.Listener<String>() {
+                                app.getHttpRequest().post("acceptance/edit/" + acceptance.get_id(), params, new Response.Listener<String>() {
 
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("my response tag", "onResponse: " + response);
-                                Toast.makeText(activity.getApplicationContext(), "Edit Request has been submitted", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                            }
-                        }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.d("my response tag", "onResponse: " + response);
+                                        Toast.makeText(activity.getApplicationContext(), "Edit Request has been submitted", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    }
+                                }, new Response.ErrorListener() {
 
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                                Log.d("my error response tag", "onErrorResponse: " + error);
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                                        Log.d("my error response tag", "onErrorResponse: " + error);
+                                    }
+                                });
                             }
                         });
 
