@@ -33,7 +33,7 @@ public class LocationService extends Service {
         Log.d("pushno loc", "onStartCommand");
 
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60 * 1000, 500, listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60 * 1000, 1, listener);
 
         Toast.makeText(getApplicationContext(), "GPS onStartCommand", Toast.LENGTH_SHORT).show();
 
