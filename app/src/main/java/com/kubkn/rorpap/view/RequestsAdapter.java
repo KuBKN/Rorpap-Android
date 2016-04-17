@@ -26,6 +26,9 @@ import com.kubkn.rorpap.model.Request;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -41,6 +44,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
     private Activity activity;
     private ArrayList<Request> requests;
     private byte cardType;
+
+    private String accept_id = "";
 
     RorpapApplication app;
 
@@ -81,29 +86,95 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         holder.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO: FIND OUT WHAT ACCEPT_ID IS IN THE API
 
-            }
-        });
-
-        holder.buttonRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                app.getHttpRequest().post("request/remove/", null, new Response.Listener<String>() {
-
+                //String accept_id = "";
+                final String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
+                app.getHttpRequest().get("acceptance/getbymess/" + messenger_id, null, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("my response tag", "onResponse: " + response);
-                    }
-                }, new Response.ErrorListener() {
+                        ArrayList<Request> requestList = Request.getLists(response);
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                        Log.d("my error response tag", "onErrorResponse: " + error);
+                        for (Request req : requestList) {
+                            JSONObject jsonObject = req.getJsonObject();
+
+                            String request_id = extractJSONInformation(jsonObject, "request_id");
+
+                            if(requests.get(position).get_id().equals(request_id) && req.getMessenger_id().equals(messenger_id)){
+                                accept_id = req.get_id();
+                            }
+                            break;
+                        }
                     }
                 });
+
+                final Dialog dialog = new Dialog(activity);
+
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_date_time);
+
+                final EditText editTextTime = (EditText) dialog.findViewById(R.id.editTextTime);
+
+                final EditText editTextDate = (EditText) dialog.findViewById(R.id.editTextDate);
+
+                Button buttonSubmit = (Button) dialog.findViewById(R.id.buttonSubmit);
+                buttonSubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String time = editTextTime.getText().toString();
+                        String date = editTextDate.getText().toString();
+
+                        String[] timearr = time.split(":");
+
+                        HashMap<String, String> params = new HashMap<String, String>();
+                        params.put("hour", timearr[0]);
+                        params.put("min", timearr[1]);
+                        params.put("date", date);
+//                        String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
+//                        String request_id = requests.get(position).get_id();
+                        app.getHttpRequest().post("acceptance/edit/" + accept_id, params, new Response.Listener<String>() {
+
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("my response tag", "onResponse: " + response);
+                                Toast.makeText(activity.getApplicationContext(), "Edit Request has been submitted", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                                Log.d("my error response tag", "onErrorResponse: " + error);
+                            }
+                        });
+
+                    }
+                });
+
+                dialog.show();
             }
         });
+
+//        holder.buttonRemove.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                app.getHttpRequest().post("request/remove/", null, new Response.Listener<String>() {
+//
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d("my response tag", "onResponse: " + response);
+//                    }
+//                }, new Response.ErrorListener() {
+//
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+//                        Log.d("my error response tag", "onErrorResponse: " + error);
+//                    }
+//                });
+//            }
+//        });
 
         holder.buttonAccept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +203,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                         params.put("min", timearr[1]);
                         params.put("date", date);
                         String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
-                        app.getHttpRequest().post("acceptance/add/" + messenger_id + "/" + requests.get(position).get_id(), params, new Response.Listener<String>() {
+                        String request_id = requests.get(position).get_id();
+                        app.getHttpRequest().post("acceptance/add/" + messenger_id + "/" + request_id, params, new Response.Listener<String>() {
 
                             @Override
                             public void onResponse(String response) {
@@ -354,7 +426,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
-            holder.buttonGroupCancel.setVisibility(View.GONE);
             holder.buttonGroupShowMap.setVisibility(View.GONE);
         } else if (cardType == MY_REQUEST && requests.get(position).getType().equals("Pending")) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#FF4081"));
@@ -363,7 +434,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
-            holder.buttonGroupCancel.setVisibility(View.VISIBLE);
             holder.buttonGroupShowMap.setVisibility(View.VISIBLE);
         } else if (cardType == MY_QUEST && requests.get(position).getType().equals("Pending")) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#FF4081"));
@@ -372,7 +442,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
-            holder.buttonGroupCancel.setVisibility(View.GONE);
             holder.buttonGroupShowMap.setVisibility(View.VISIBLE);
         } else if (cardType == MY_REQUEST && requests.get(position).getType().equals("Reserved")) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#FFE082"));
@@ -381,7 +450,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             holder.buttonGroupMyRequestReserved.setVisibility(View.VISIBLE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
-            holder.buttonGroupCancel.setVisibility(View.VISIBLE);
             holder.buttonGroupShowMap.setVisibility(View.VISIBLE);
         } else if (cardType == MY_QUEST && requests.get(position).getType().equals("Reserved")) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#FFE082"));
@@ -390,7 +458,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.VISIBLE);
             holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
-            holder.buttonGroupCancel.setVisibility(View.VISIBLE);
             holder.buttonGroupShowMap.setVisibility(View.VISIBLE);
         }
         else if (cardType == MY_QUEST && requests.get(position).getType().equals("Inprogress")) {
@@ -400,7 +467,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestInprogress.setVisibility(View.VISIBLE);
-            holder.buttonGroupCancel.setVisibility(View.VISIBLE);
             holder.buttonGroupShowMap.setVisibility(View.VISIBLE);
         }
         else if (cardType == MY_QUEST && requests.get(position).getType().equals("Finished")) {
@@ -410,9 +476,18 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             holder.buttonGroupMyRequestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestReserved.setVisibility(View.GONE);
             holder.buttonGroupMyQuestInprogress.setVisibility(View.GONE);
-            holder.buttonGroupCancel.setVisibility(View.GONE);
             holder.buttonGroupShowMap.setVisibility(View.VISIBLE);
         }
+    }
+
+    public String extractJSONInformation(JSONObject jo, String info){
+        try {
+            String information = jo.getString(info);
+            return information;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     @Override
@@ -443,11 +518,11 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         public LinearLayout buttonGroupMyRequestReserved;
         public LinearLayout buttonGroupMyQuestReserved;
         public LinearLayout buttonGroupMyQuestInprogress;
-        public LinearLayout buttonGroupCancel;
+
         public LinearLayout buttonGroupShowMap;
 
         public Button buttonEdit;
-        public Button buttonRemove;
+
         public Button buttonAccept;
         public Button buttonSend;
         public Button buttonStart;
@@ -479,11 +554,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             buttonGroupMyRequestReserved = (LinearLayout) view.findViewById(R.id.buttonGroupMyRequestReserved);
             buttonGroupMyQuestReserved = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestReserved);
             buttonGroupMyQuestInprogress = (LinearLayout) view.findViewById(R.id.buttonGroupMyQuestInprogress);
-            buttonGroupCancel = (LinearLayout) view.findViewById(R.id.buttonGroupCancel);
             buttonGroupShowMap = (LinearLayout) view.findViewById(R.id.buttonGroupShowMap);
 
             buttonEdit = (Button) view.findViewById(R.id.buttonEdit);
-            buttonRemove = (Button) view.findViewById(R.id.buttonRemove);
             buttonAccept = (Button) view.findViewById(R.id.buttonAccept);
             buttonSend = (Button) view.findViewById(R.id.buttonSend);
             buttonStart = (Button) view.findViewById(R.id.buttonStart);

@@ -83,7 +83,7 @@ public class AcceptedQuest extends Fragment {
                     }
                 });
                 Log.d("it reach here2", "it reach here2");
-                RequestsAdapter adapter = new RequestsAdapter(getActivity(), acceptedRequestList, RequestsAdapter.MY_QUEST);
+                RequestsAdapter adapter = new RequestsAdapter(getActivity(), acceptedRequestList, RequestsAdapter.MY_REQUEST);
                 for(Request req : acceptedRequestList){
                     Log.d("req.getRecipient_name()", req.getRecipient_name());
                 }
