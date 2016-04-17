@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.kubkn.rorpap.R;
+import com.kubkn.rorpap.model.Acceptance;
 import com.kubkn.rorpap.model.Request;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
@@ -97,7 +98,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
 
                 final String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
-
                 Button buttonSubmit = (Button) dialog.findViewById(R.id.buttonSubmit);
                 buttonSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -106,15 +106,15 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                         app.getHttpRequest().get("acceptance/getbymess/" + messenger_id, null, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                ArrayList<Request> requestList = Request.getLists(response);
+                                ArrayList<Acceptance> acceptanceList = Acceptance.getLists(response);
 
-                                for (Request req : requestList) {
-                                    JSONObject jsonObject = req.getJsonObject();
+                                for (Acceptance acc : acceptanceList) {
+                                    JSONObject jsonObject = acc.getJsonObject();
 
                                     String request_id = extractJSONInformation(jsonObject, "request_id");
 
-                                    if(requests.get(position).get_id().equals(request_id) && req.getMessenger_id().equals(messenger_id)){
-                                        accept_id = req.get_id();
+                                    if(requests.get(position).get_id().equals(request_id) && acc.getMessenger_id().equals(messenger_id)){
+                                        accept_id = acc.get_id();
                                         Log.d("req.get_id()", accept_id);
                                     }
                                     break;
