@@ -86,28 +86,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         holder.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: FIND OUT WHAT ACCEPT_ID IS IN THE API
-
-                //String accept_id = "";
-                final String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
-                app.getHttpRequest().get("acceptance/getbymess/" + messenger_id, null, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        ArrayList<Request> requestList = Request.getLists(response);
-
-                        for (Request req : requestList) {
-                            JSONObject jsonObject = req.getJsonObject();
-
-                            String request_id = extractJSONInformation(jsonObject, "request_id");
-
-                            if(requests.get(position).get_id().equals(request_id) && req.getMessenger_id().equals(messenger_id)){
-                                accept_id = req.get_id();
-                            }
-                            break;
-                        }
-                    }
-                });
-
                 final Dialog dialog = new Dialog(activity);
 
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -117,10 +95,34 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
 
                 final EditText editTextDate = (EditText) dialog.findViewById(R.id.editTextDate);
 
+                final String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
+
+
                 Button buttonSubmit = (Button) dialog.findViewById(R.id.buttonSubmit);
                 buttonSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        app.getHttpRequest().get("acceptance/getbymess/" + messenger_id, null, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                ArrayList<Request> requestList = Request.getLists(response);
+
+                                for (Request req : requestList) {
+                                    JSONObject jsonObject = req.getJsonObject();
+
+                                    String request_id = extractJSONInformation(jsonObject, "request_id");
+
+                                    if(requests.get(position).get_id().equals(request_id) && req.getMessenger_id().equals(messenger_id)){
+                                        accept_id = req.get_id();
+                                        Log.d("req.get_id()", accept_id);
+                                    }
+                                    break;
+                                }
+                            }
+                        });
+                        Log.d("accept_id", accept_id);
+
                         String time = editTextTime.getText().toString();
                         String date = editTextDate.getText().toString();
 
@@ -132,6 +134,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                         params.put("date", date);
 //                        String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
 //                        String request_id = requests.get(position).get_id();
+
                         app.getHttpRequest().post("acceptance/edit/" + accept_id, params, new Response.Listener<String>() {
 
                             @Override
@@ -420,6 +423,53 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             }
         });
 
+        holder.buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, String> request = new HashMap<String, String>();
+                request.put("request_id", requests.get(position).get_id());
+                request.put("messenger_id", app.getPreferences().getString(Preferences.KEY_USERID));
+
+                app.getHttpRequest().post("acceptance/remove", request, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(activity.getApplicationContext(), "Cancel successful", Toast.LENGTH_SHORT).show();
+                        Log.d("my response tag", "onResponse: " + response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        Log.d("my error response tag", "onErrorResponse: " + error);
+                    }
+                });
+            }
+        });
+
+        holder.buttonCancel1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, String> request = new HashMap<String, String>();
+                String request_id = requests.get(position).get_id();
+                request.put("request_id", request_id);
+                app.getHttpRequest().post("request/cancel/" + request_id, request, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(activity.getApplicationContext(), "Cancel1 successful", Toast.LENGTH_SHORT).show();
+                        Log.d("my response tag", "onResponse: " + response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        Log.d("my error response tag", "onErrorResponse: " + error);
+                    }
+                });
+            }
+        });
+
         if (cardType == UNKNOWN) {
             holder.buttonGroupMyRequestPending.setVisibility(View.GONE);
             holder.buttonGroupMyQuestPending.setVisibility(View.GONE);
@@ -529,6 +579,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         public Button buttonFinish;
         public Button buttonMap;
         public Button buttonCancel;
+        public Button buttonCancel1;
 
         public ViewHolder(View view) {
             super(view);
@@ -562,6 +613,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             buttonStart = (Button) view.findViewById(R.id.buttonStart);
             buttonFinish = (Button) view.findViewById(R.id.buttonFinish);
             buttonCancel = (Button) view.findViewById(R.id.buttonCancel);
+            buttonCancel1 = (Button) view.findViewById(R.id.buttonCancel1);
             buttonMap = (Button) view.findViewById(R.id.buttonMap);
 
         }
