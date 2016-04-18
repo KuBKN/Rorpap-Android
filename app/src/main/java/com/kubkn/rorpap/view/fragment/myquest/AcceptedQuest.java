@@ -2,10 +2,8 @@ package com.kubkn.rorpap.view.fragment.myquest;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +23,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 
 public class AcceptedQuest extends RefreshableFragment {
 
@@ -82,6 +79,7 @@ public class AcceptedQuest extends RefreshableFragment {
     @Override
     public void refresh() {
         loading.show();
+        recyclerView.setAdapter(null);
         final String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
         requestIDAcceptedSet = new ArrayList<String>();
 
