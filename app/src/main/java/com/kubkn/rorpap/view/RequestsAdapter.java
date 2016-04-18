@@ -24,6 +24,7 @@ import com.android.volley.error.VolleyError;
 import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.Acceptance;
 import com.kubkn.rorpap.model.Request;
+import com.kubkn.rorpap.model.User;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
 
@@ -71,18 +72,26 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 //            holder.imageView
         holder.textViewReceiver.setText(requests.get(position).getRecipient_name());
         holder.textViewXMessenger.setText(".");
         holder.textViewDueDate.setText(requests.get(position).getShipLimitDate());
-        holder.textViewDueTime.setText(requests.get(position).getShipLimitTime());
+        holder.textViewDueTime.setText(requests.get(position).getShipLimitHour() + ":" + requests.get(position).getShipLimitTime());
         holder.textViewEmail.setText(requests.get(position).getRecipient_email());
         holder.textViewPrice.setText(requests.get(position).getPrice());
         holder.textViewTel.setText(requests.get(position).getRecipient_tel());
         holder.textViewDue.setText(requests.get(position).getReqLimitDate() + " " + requests.get(position).getReqLimitTime());
         holder.textViewSender.setText(requests.get(position).getSender_id());
         holder.textViewComment.setText(requests.get(position).getComment());
+
+        app.getHttpRequest().get("user/get/" + requests.get(position).getSender_id(), null, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                User user = new User(response);
+                holder.textViewSender.setText(user.getFirstname() + " " + user.getLastname());
+            }
+        });
 
         holder.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,25 +164,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             }
         });
 
-//        holder.buttonRemove.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                app.getHttpRequest().post("request/remove/", null, new Response.Listener<String>() {
-//
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.d("my response tag", "onResponse: " + response);
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(activity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-//                        Log.d("my error response tag", "onErrorResponse: " + error);
-//                    }
-//                });
-//            }
-//        });
 
         holder.buttonAccept.setOnClickListener(new View.OnClickListener() {
             @Override
