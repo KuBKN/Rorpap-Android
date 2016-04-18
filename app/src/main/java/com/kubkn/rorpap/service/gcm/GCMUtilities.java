@@ -61,28 +61,31 @@ public class GCMUtilities {
     private static void storeRegIdinSharedPref(final Context context, String regId) {
         RorpapApplication app = (RorpapApplication) context;
 
-        app.getPreferences().putString(Preferences.KEY_GCM_TOKEN, regId);
 
-        HashMap<String, String> params = new HashMap<String, String>();
 
-        params.put("user_id", app.getPreferences().getString(Preferences.KEY_USERID));
-        params.put("token", regId);
+        String user_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
-        app.getHttpRequest().post("gcm/register/", params, new Response.Listener<String>() {
+        if (user_id != null) {
+            app.getPreferences().putString(Preferences.KEY_GCM_TOKEN, regId);
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put("user_id", user_id);
+            params.put("token", regId);
+            app.getHttpRequest().post("gcm/register/", params, new Response.Listener<String>() {
 
-            @Override
-            public void onResponse(String response) {
-                Log.d("savess", "ok: " + response);
+                @Override
+                public void onResponse(String response) {
+                    Log.d("savess", "ok: " + response);
 //                Toast.makeText(context, "Register GCM ok.", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
+                }
+            }, new Response.ErrorListener() {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("savess", "failed: " + error);
-                Toast.makeText(context, "Register GCM failed.", Toast.LENGTH_SHORT).show();
-                error.printStackTrace();
-            }
-        });
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("savess", "failed: " + error);
+                    Toast.makeText(context, "Register GCM failed.", Toast.LENGTH_SHORT).show();
+                    error.printStackTrace();
+                }
+            });
+        }
     }
 }

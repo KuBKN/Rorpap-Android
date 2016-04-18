@@ -1,6 +1,7 @@
 package com.kubkn.rorpap.service;
 
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import com.kubkn.rorpap.service.gcm.GCMUtilities;
 
@@ -19,7 +20,7 @@ public class RorpapApplication extends MultiDexApplication {
         httpRequest = new HTTPRequest(this);
         preferences = new Preferences(this);
 
-        GCMUtilities.register(getApplicationContext());
+        registerGCM();
     }
 
     public HTTPRequest getHttpRequest() {
@@ -28,5 +29,10 @@ public class RorpapApplication extends MultiDexApplication {
 
     public Preferences getPreferences() {
         return preferences;
+    }
+
+    public void registerGCM() {
+        Log.d("GCMs", "regis");
+        GCMUtilities.register(getApplicationContext());
     }
 }

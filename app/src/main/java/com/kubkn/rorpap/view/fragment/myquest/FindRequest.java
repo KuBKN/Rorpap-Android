@@ -83,57 +83,51 @@ public class FindRequest extends RefreshableFragment {
                 for (Request req : requestList) {
                     JSONObject jsonObject = req.getJsonObject();
                     String request_id = extractJSONInformation(jsonObject, "request_id");
-                    Log.d("request_id", request_id);
+
                     if (!request_id.equals("")) {
                         requestIDAcceptedSet.add(request_id);
                     }
                 }
 
-                if (loading.isShowing()) {
-                    loading.dismiss();
-                }
-            }
-        });
+                app.getHttpRequest().get("request/get_quest/Pending/!" + sender_id, null, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        ArrayList<Request> requestList = Request.getLists(response);
+                        ArrayList<Request> resultList = new ArrayList<Request>();
 
-        app.getHttpRequest().get("request/get_quest/Pending/!" + sender_id, null, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                ArrayList<Request> requestList = Request.getLists(response);
-                ArrayList<Request> resultList = new ArrayList<Request>();
+                        for(Request req : requestList){
+                            if((!req.getSender_id().equals(sender_id))){
+                                resultList.add(req);
+                            }
+                        }
+                        ArrayList<Request> listOfRequestToBeRemoved = new ArrayList<Request>();
+                        for(Request req : resultList){
+                            for(String reqID : requestIDAcceptedSet){
+                                if(req.get_id().equals(reqID)){
+                                    listOfRequestToBeRemoved.add(req);
+                                }
+                            }
+                        }
 
-                for(Request req : requestList){
-                    if((!req.getSender_id().equals(sender_id))){
-                        resultList.add(req);
-                    }
-                }
-                ArrayList<Request> listOfRequestToBeRemoved = new ArrayList<Request>();
-                for(Request req : resultList){
-                    Log.d("req.get_id()", req.get_id());
-                    for(String reqID : requestIDAcceptedSet){
-                        Log.d("reqID", reqID);
-                        if(req.get_id().equals(reqID)){
-                            listOfRequestToBeRemoved.add(req);
+                        for(Request req : listOfRequestToBeRemoved){
+                            resultList.remove(req);
+                        }
+
+                        Collections.sort(resultList, new Comparator<Request>() {
+                            @Override
+                            public int compare(Request lhs, Request rhs) {
+                                return rhs.get_id().compareTo(lhs.get_id());
+                            }
+                        });
+
+                        RequestsAdapter adapter = new RequestsAdapter((RefreshableActivity) getActivity(), resultList, RequestsAdapter.MY_QUEST);
+                        recyclerView.setAdapter(adapter);
+
+                        if (loading.isShowing()) {
+                            loading.dismiss();
                         }
                     }
-                }
-
-                for(Request req : listOfRequestToBeRemoved){
-                    resultList.remove(req);
-                }
-
-                Collections.sort(resultList, new Comparator<Request>() {
-                    @Override
-                    public int compare(Request lhs, Request rhs) {
-                        return rhs.get_id().compareTo(lhs.get_id());
-                    }
                 });
-
-                RequestsAdapter adapter = new RequestsAdapter((RefreshableActivity) getActivity(), resultList, RequestsAdapter.MY_QUEST);
-                recyclerView.setAdapter(adapter);
-
-                if (loading.isShowing()) {
-                    loading.dismiss();
-                }
             }
         });
     }

@@ -52,7 +52,7 @@ public class HTTPRequest {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.d("http err", "path: " + error.getMessage());
             }
         });
     }
@@ -68,7 +68,7 @@ public class HTTPRequest {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("erro", error.getMessage());
+                Log.d("http err", "path: " + error.getMessage());
             }
         });
     }
@@ -100,7 +100,7 @@ public class HTTPRequest {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.d("http err", "path: " + error.getMessage());
             }
         });
     }
@@ -116,7 +116,7 @@ public class HTTPRequest {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.d("http err", "path: " + error.getMessage());
             }
         });
     }
