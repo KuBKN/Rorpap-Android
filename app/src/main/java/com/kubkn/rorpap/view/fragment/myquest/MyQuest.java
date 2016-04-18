@@ -13,6 +13,7 @@ import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.Request;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
+import com.kubkn.rorpap.view.RefreshableFragment;
 import com.kubkn.rorpap.view.RequestsAdapter;
 
 import java.util.ArrayList;
@@ -22,7 +23,9 @@ import java.util.Comparator;
 /**
  * Created by batmaster on 4/5/16 AD.
  */
-public class MyQuest extends Fragment {
+public class MyQuest extends RefreshableFragment {
+
+    private RorpapApplication app;
 
     private RecyclerView recyclerView;
     private RequestsAdapter adapter;
@@ -34,7 +37,25 @@ public class MyQuest extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.myquest);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();
+        app = (RorpapApplication) getActivity().getApplicationContext();
+
+        refresh();
+
+        return view;
+    }
+
+    private ArrayList<Request> SortRequest(ArrayList<Request> listToBeSort){
+        Collections.sort(listToBeSort, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return rhs.get_id().compareTo(lhs.get_id());
+            }
+        });
+        return listToBeSort;
+    }
+
+    @Override
+    public void refresh() {
         String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
         app.getHttpRequest().get("request/get_quest/Reserved/" + messenger_id, null, new Response.Listener<String>() {
@@ -63,17 +84,5 @@ public class MyQuest extends Fragment {
                 }
             }
         });
-
-        return view;
-    }
-
-    private ArrayList<Request> SortRequest(ArrayList<Request> listToBeSort){
-        Collections.sort(listToBeSort, new Comparator<Request>() {
-            @Override
-            public int compare(Request lhs, Request rhs) {
-                return rhs.get_id().compareTo(lhs.get_id());
-            }
-        });
-        return listToBeSort;
     }
 }

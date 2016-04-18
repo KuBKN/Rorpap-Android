@@ -14,6 +14,7 @@ import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.Request;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
+import com.kubkn.rorpap.view.RefreshableFragment;
 import com.kubkn.rorpap.view.RequestsAdapter;
 
 import org.json.JSONException;
@@ -27,7 +28,9 @@ import java.util.HashSet;
 /**
  * Created by batmaster on 4/5/16 AD.
  */
-public class FindRequest extends Fragment {
+public class FindRequest extends RefreshableFragment {
+
+    private RorpapApplication app;
 
     private RecyclerView recyclerView;
 
@@ -40,7 +43,25 @@ public class FindRequest extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.findrequest);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();
+        app = (RorpapApplication) getActivity().getApplicationContext();
+
+        refresh();
+
+        return view;
+    }
+
+    private String extractJSONInformation(JSONObject jo, String info){
+        try {
+            String information = jo.getString(info);
+            return information;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @Override
+    public void refresh() {
         final String sender_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
         requestIDAcceptedSet = new HashSet<>();
@@ -98,17 +119,5 @@ public class FindRequest extends Fragment {
                 recyclerView.setAdapter(adapter);
             }
         });
-
-        return view;
-    }
-
-    public String extractJSONInformation(JSONObject jo, String info){
-        try {
-            String information = jo.getString(info);
-            return information;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return "";
     }
 }

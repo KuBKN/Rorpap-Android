@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +27,7 @@ import com.kubkn.rorpap.view.fragment.myquest.AcceptedQuest;
 import com.kubkn.rorpap.view.fragment.myquest.History;
 import com.kubkn.rorpap.view.fragment.myquest.MyQuest;
 
-public class MainActivity extends AppCompatActivity {
+public class MyQuestActivity extends AppCompatActivity {
 
     private String[] mDrawerTitle = {"Find Request", "Messenger", "Map", "Profile", "Log out"};
     private DrawerLayout mDrawerLayout;
@@ -37,22 +37,21 @@ public class MainActivity extends AppCompatActivity {
     private RorpapApplication app;
 
     private MyQuestPagerAdapter myQuestPagerAdapter;
+    private SwipeRefreshLayout refreshLayout;
     private ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_request_list);
 
         app = (RorpapApplication) getApplicationContext();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         mListView = (ListView) findViewById(R.id.drawer);
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.drawer_row, mDrawerTitle);
-
         mListView.setAdapter(adapter);
-
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -157,6 +156,16 @@ public class MainActivity extends AppCompatActivity {
                             .setText(myQuestPagerAdapter.getTag(i))
                             .setTabListener(tabListener));
         }
+
+        pager.setOffscreenPageLimit(3);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                myQuestPagerAdapter.refresh();
+                refreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
@@ -169,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class MyQuestPagerAdapter extends FragmentStatePagerAdapter {
 
-        private Fragment[] fragments = {
+        private RefreshableFragment[] fragments = {
                 new AcceptedQuest(),
                 new MyQuest(),
                 new History()
@@ -195,6 +204,12 @@ public class MainActivity extends AppCompatActivity {
 
         public String getTag(int position) {
             return tags[position];
+        }
+
+        public void refresh() {
+            for (int i = 0; i < fragments.length; i++) {
+                fragments[i].refresh();
+            }
         }
     }
 }

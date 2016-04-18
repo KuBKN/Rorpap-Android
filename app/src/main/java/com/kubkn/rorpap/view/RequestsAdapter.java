@@ -388,24 +388,24 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                         caller_fragment = R.id.findrequest;
                     }
                     else{
-                        caller = "com.kubkn.rorpap.view.MainActivity";
+                        caller = "com.kubkn.rorpap.view.MyQuestActivity";
                         caller_fragment = R.id.acceptedquest;
                     }
                 }
                 else if(requestType.equals("Reserved")){
-                    caller = "com.kubkn.rorpap.view.MainActivity";
+                    caller = "com.kubkn.rorpap.view.MyQuestActivity";
                     caller_fragment = R.id.myquest;
                 }
                 else if(requestType.equals("Inprogress")){
-                    caller = "com.kubkn.rorpap.view.MainActivity";
+                    caller = "com.kubkn.rorpap.view.MyQuestActivity";
                     caller_fragment = R.id.myquest;
                 }
                 else if(requestType.equals("Finished")){
-                    caller = "com.kubkn.rorpap.view.MainActivity";
+                    caller = "com.kubkn.rorpap.view.MyQuestActivity";
                     caller_fragment = R.id.history;
                 }
                 else{
-                    caller = "com.kubkn.rorpap.view.MainActivity";
+                    caller = "com.kubkn.rorpap.view.MyQuestActivity";
                     caller_fragment = R.id.acceptedquest;
                 }
                 intent.putExtra("caller", caller);

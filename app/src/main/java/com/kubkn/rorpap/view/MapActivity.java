@@ -72,7 +72,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         finish();
                         break;
                     case 1:
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent = new Intent(getApplicationContext(), MyQuestActivity.class);
                         startActivity(intent);
                         finish();
                         break;
@@ -124,7 +124,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MyQuestActivity.class);
                 startActivity(intent);
                 finish();
             }

@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,12 +35,13 @@ public class FindRequestActivity extends AppCompatActivity {
     private RorpapApplication app;
 
     private MyQuestPagerAdapter myQuestPagerAdapter;
+    private SwipeRefreshLayout refreshLayout;
     private ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_request_list);
 
         app = (RorpapApplication) getApplicationContext();
 
@@ -62,7 +63,7 @@ public class FindRequestActivity extends AppCompatActivity {
                     case 0:
                         break;
                     case 1:
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent = new Intent(getApplicationContext(), MyQuestActivity.class);
                         startActivity(intent);
                         finish();
                         break;
@@ -164,6 +165,14 @@ public class FindRequestActivity extends AppCompatActivity {
                             .setTabListener(tabListener));
         }
 
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                myQuestPagerAdapter.refresh();
+                refreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
@@ -176,7 +185,7 @@ public class FindRequestActivity extends AppCompatActivity {
 
     private class MyQuestPagerAdapter extends FragmentStatePagerAdapter {
 
-        private Fragment[] fragments = {
+        private RefreshableFragment[] fragments = {
                 new FindRequest()
         };
 
@@ -202,6 +211,12 @@ public class FindRequestActivity extends AppCompatActivity {
 
         public String getTag(int position) {
             return tags[position];
+        }
+
+        public void refresh() {
+            for (int i = 0; i < fragments.length; i++) {
+                fragments[i].refresh();
+            }
         }
     }
 }

@@ -9,8 +9,6 @@ import android.view.Window;
 import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
-import com.kubkn.rorpap.view.LoginActivity;
-import com.kubkn.rorpap.view.MainActivity;
 
 public class LogoActivity extends AppCompatActivity {
 
@@ -29,7 +27,7 @@ public class LogoActivity extends AppCompatActivity {
         if (app.getPreferences().getString(Preferences.KEY_USERID) == null)
             intent = new Intent(getApplicationContext(), LoginActivity.class);
         else
-            intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent = new Intent(getApplicationContext(), MyQuestActivity.class);
 
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -13,6 +13,7 @@ import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.Request;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
+import com.kubkn.rorpap.view.RefreshableFragment;
 import com.kubkn.rorpap.view.RequestsAdapter;
 
 import java.util.ArrayList;
@@ -22,7 +23,9 @@ import java.util.Comparator;
 /**
  * Created by batmaster on 4/5/16 AD.
  */
-public class History extends Fragment {
+public class History extends RefreshableFragment {
+
+    private RorpapApplication app;
 
     private RecyclerView recyclerView;
 
@@ -30,19 +33,12 @@ public class History extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myquest_history, container, false);
 
+        app = (RorpapApplication) getActivity().getApplicationContext();
+
         recyclerView = (RecyclerView) view.findViewById(R.id.history);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();
-        String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
-
-        app.getHttpRequest().get("request/get_quest/Finished/" + messenger_id, null, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                RequestsAdapter adapter = new RequestsAdapter(getActivity(), SortRequest(Request.getLists(response)), RequestsAdapter.MY_QUEST);
-                recyclerView.setAdapter(adapter);
-            }
-        });
+        refresh();
 
         return view;
     }
@@ -55,5 +51,18 @@ public class History extends Fragment {
             }
         });
         return listToBeSort;
+    }
+
+    @Override
+    public void refresh() {
+        String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
+
+        app.getHttpRequest().get("request/get_quest/Finished/" + messenger_id, null, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                RequestsAdapter adapter = new RequestsAdapter(getActivity(), SortRequest(Request.getLists(response)), RequestsAdapter.MY_QUEST);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 }

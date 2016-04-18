@@ -14,6 +14,7 @@ import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.Request;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
+import com.kubkn.rorpap.view.RefreshableFragment;
 import com.kubkn.rorpap.view.RequestsAdapter;
 
 import org.json.JSONException;
@@ -24,7 +25,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 
-public class AcceptedQuest extends Fragment {
+public class AcceptedQuest extends RefreshableFragment {
+
+    private RorpapApplication app;
 
     private RecyclerView recyclerView;
     private RequestsAdapter adapter;
@@ -34,13 +37,30 @@ public class AcceptedQuest extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_myquest_acceptedquest, container, false);
 
+        app = (RorpapApplication) getActivity().getApplicationContext();
+
         recyclerView = (RecyclerView) view.findViewById(R.id.acceptedquest);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         Log.d("recyclerView", recyclerView.toString());
 
-        RorpapApplication app = (RorpapApplication) getActivity().getApplicationContext();
-        String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
+        refresh();
 
+        return view;
+    }
+
+    private String extractJSONInformation(JSONObject jo, String info){
+        try {
+            String information = jo.getString(info);
+            return information;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @Override
+    public void refresh() {
+        String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
         requestIDAcceptedSet = new HashSet<>();
 
         app.getHttpRequest().get("acceptance/getbymess/" + messenger_id, null, new Response.Listener<String>() {
@@ -91,17 +111,5 @@ public class AcceptedQuest extends Fragment {
                 recyclerView.setAdapter(adapter);
             }
         });
-
-        return view;
-    }
-
-    public String extractJSONInformation(JSONObject jo, String info){
-        try {
-            String information = jo.getString(info);
-            return information;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return "";
     }
 }

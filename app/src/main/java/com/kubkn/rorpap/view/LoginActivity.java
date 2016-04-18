@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         app.getPreferences().putString(Preferences.KEY_USERID, user.get_id());
 
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), MyQuestActivity.class);
                         startActivity(intent);
                         finish();
                     }
