@@ -12,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,9 +24,9 @@ import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
 import com.kubkn.rorpap.view.fragment.myquest.AcceptedQuest;
 import com.kubkn.rorpap.view.fragment.myquest.History;
-import com.kubkn.rorpap.view.fragment.myquest.MyQuest;
+import com.kubkn.rorpap.view.fragment.myquest.InProgress;
 
-public class MyQuestActivity extends AppCompatActivity {
+public class MyQuestActivity extends RefreshableActivity {
 
     private String[] mDrawerTitle = {"Find Request", "Messenger", "Map", "Profile", "Log out"};
     private DrawerLayout mDrawerLayout;
@@ -162,8 +161,7 @@ public class MyQuestActivity extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                myQuestPagerAdapter.refresh();
-                refreshLayout.setRefreshing(false);
+                refresh();
             }
         });
     }
@@ -176,11 +174,17 @@ public class MyQuestActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void refresh() {
+        myQuestPagerAdapter.refresh();
+        refreshLayout.setRefreshing(false);
+    }
+
     private class MyQuestPagerAdapter extends FragmentStatePagerAdapter {
 
         private RefreshableFragment[] fragments = {
                 new AcceptedQuest(),
-                new MyQuest(),
+                new InProgress(),
                 new History()
         };
 

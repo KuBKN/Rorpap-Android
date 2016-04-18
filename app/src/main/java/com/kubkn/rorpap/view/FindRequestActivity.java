@@ -25,7 +25,7 @@ import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
 import com.kubkn.rorpap.view.fragment.myquest.FindRequest;
 
-public class FindRequestActivity extends AppCompatActivity {
+public class FindRequestActivity extends RefreshableActivity {
 
     private String[] mDrawerTitle = {"Find Request", "Messenger", "Map", "Profile", "Log out"};
     private DrawerLayout mDrawerLayout;
@@ -169,8 +169,7 @@ public class FindRequestActivity extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                myQuestPagerAdapter.refresh();
-                refreshLayout.setRefreshing(false);
+                refresh();
             }
         });
     }
@@ -181,6 +180,12 @@ public class FindRequestActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void refresh() {
+        myQuestPagerAdapter.refresh();
+        refreshLayout.setRefreshing(false);
     }
 
     private class MyQuestPagerAdapter extends FragmentStatePagerAdapter {

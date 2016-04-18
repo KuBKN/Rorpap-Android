@@ -42,7 +42,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
     public static final byte MY_REQUEST = 1;
     public static final byte MY_QUEST = 2;
 
-    private Activity activity;
+    private RefreshableActivity activity;
     private ArrayList<Request> requests;
     private byte cardType;
 
@@ -50,7 +50,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
 
     RorpapApplication app;
 
-    public RequestsAdapter(Activity activity, ArrayList<Request> requests, byte cardType) {
+    public RequestsAdapter(RefreshableActivity activity, ArrayList<Request> requests, byte cardType) {
         this.activity = activity;
         this.requests = requests;
         this.cardType = cardType;
@@ -134,6 +134,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                         Log.d("my response tag", "onResponse: " + response);
                                         Toast.makeText(activity.getApplicationContext(), "Edit Request has been submitted", Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
+
+                                        activity.refresh();
                                     }
                                 }, new Response.ErrorListener() {
 
@@ -208,6 +210,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                 Log.d("my response tag", "onResponse: " + response);
                                 Toast.makeText(activity.getApplicationContext(), "Acceptance Request has been submitted", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
+
+                                activity.refresh();
                             }
                         }, new Response.ErrorListener() {
 
@@ -278,8 +282,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                         }
                                     });
 
-
-
+                                    activity.refresh();
                                 }
                             }, new Response.ErrorListener() {
 
@@ -348,6 +351,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                         }
                                     });
                                     Log.d("my response tag", "onResponse: " + response);
+
+                                    activity.refresh();
                                 }
                             }, new Response.ErrorListener() {
 
@@ -429,6 +434,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                     public void onResponse(String response) {
                         Toast.makeText(activity.getApplicationContext(), "Cancel successful", Toast.LENGTH_SHORT).show();
                         Log.d("my response tag", "onResponse: " + response);
+
+                        activity.refresh();
                     }
                 }, new Response.ErrorListener() {
 
@@ -452,6 +459,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                     public void onResponse(String response) {
                         Toast.makeText(activity.getApplicationContext(), "Cancel1 successful", Toast.LENGTH_SHORT).show();
                         Log.d("my response tag", "onResponse: " + response);
+
+                        activity.refresh();
                     }
                 }, new Response.ErrorListener() {
 

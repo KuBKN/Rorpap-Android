@@ -1,5 +1,6 @@
 package com.kubkn.rorpap.view.fragment.myquest;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.Request;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
+import com.kubkn.rorpap.view.RefreshableActivity;
 import com.kubkn.rorpap.view.RefreshableFragment;
 import com.kubkn.rorpap.view.RequestsAdapter;
 
@@ -31,6 +33,7 @@ import java.util.HashSet;
 public class FindRequest extends RefreshableFragment {
 
     private RorpapApplication app;
+    private ProgressDialog loading;
 
     private RecyclerView recyclerView;
 
@@ -40,10 +43,15 @@ public class FindRequest extends RefreshableFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myquest_findrequest, container, false);
 
+        app = (RorpapApplication) getActivity().getApplicationContext();
+
+        loading = new ProgressDialog(getActivity());
+        loading.setTitle("Requests");
+        loading.setMessage("Loading...");
+        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.findrequest);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        app = (RorpapApplication) getActivity().getApplicationContext();
 
         refresh();
 
@@ -62,6 +70,7 @@ public class FindRequest extends RefreshableFragment {
 
     @Override
     public void refresh() {
+        loading.show();
         final String sender_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
         requestIDAcceptedSet = new HashSet<>();
@@ -78,6 +87,10 @@ public class FindRequest extends RefreshableFragment {
                     if (!request_id.equals("")) {
                         requestIDAcceptedSet.add(request_id);
                     }
+                }
+
+                if (loading.isShowing()) {
+                    loading.dismiss();
                 }
             }
         });
@@ -115,8 +128,12 @@ public class FindRequest extends RefreshableFragment {
                     }
                 });
 
-                RequestsAdapter adapter = new RequestsAdapter(getActivity(), resultList, RequestsAdapter.MY_QUEST);
+                RequestsAdapter adapter = new RequestsAdapter((RefreshableActivity) getActivity(), resultList, RequestsAdapter.MY_QUEST);
                 recyclerView.setAdapter(adapter);
+
+                if (loading.isShowing()) {
+                    loading.dismiss();
+                }
             }
         });
     }
