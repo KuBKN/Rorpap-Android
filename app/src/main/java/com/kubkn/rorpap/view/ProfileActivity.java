@@ -233,4 +233,11 @@ public class ProfileActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MyQuestActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

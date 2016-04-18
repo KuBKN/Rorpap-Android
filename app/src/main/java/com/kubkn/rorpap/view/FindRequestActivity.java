@@ -224,4 +224,11 @@ public class FindRequestActivity extends RefreshableActivity {
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MyQuestActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

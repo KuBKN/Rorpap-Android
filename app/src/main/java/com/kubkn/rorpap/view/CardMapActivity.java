@@ -119,4 +119,11 @@ public class CardMapActivity extends AppCompatActivity implements OnMapReadyCall
     public void onLocationChanged(Location location) {
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MyQuestActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
