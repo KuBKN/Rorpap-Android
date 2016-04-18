@@ -53,6 +53,20 @@ public class FindRequest extends RefreshableFragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.findrequest);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        final LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                ((RefreshableActivity) getActivity()).setSwipeRefreshEnable(lm.findViewByPosition(lm.findFirstVisibleItemPosition()).getTop() == 0 && lm.findFirstVisibleItemPosition() == 0);
+            }
+        });
+
         refresh();
 
         return view;

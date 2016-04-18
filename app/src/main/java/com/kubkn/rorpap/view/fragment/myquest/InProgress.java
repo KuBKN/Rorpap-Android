@@ -4,9 +4,11 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import com.android.volley.Response;
 import com.kubkn.rorpap.R;
@@ -45,6 +47,20 @@ public class InProgress extends RefreshableFragment {
         loading.setTitle("Requests");
         loading.setMessage("Loading...");
         loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+        final LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                ((RefreshableActivity) getActivity()).setSwipeRefreshEnable(lm.findViewByPosition(lm.findFirstVisibleItemPosition()).getTop() == 0 && lm.findFirstVisibleItemPosition() == 0);
+            }
+        });
 
         refresh();
 

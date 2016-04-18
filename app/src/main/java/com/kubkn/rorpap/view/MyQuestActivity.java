@@ -177,6 +177,11 @@ public class MyQuestActivity extends RefreshableActivity {
     }
 
     @Override
+    public void setSwipeRefreshEnable(boolean enable) {
+        refreshLayout.setEnabled(enable);
+    }
+
+    @Override
     public void refresh() {
         myQuestPagerAdapter.refresh();
         refreshLayout.setRefreshing(false);
