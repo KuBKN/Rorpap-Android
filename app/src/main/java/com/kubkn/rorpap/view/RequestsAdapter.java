@@ -1,6 +1,5 @@
 package com.kubkn.rorpap.view;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -338,11 +337,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                                     }
                                                 });
                                             }
+                                            dialog.dismiss();
+                                            activity.refresh();
                                         }
                                     });
                                     Log.d("my response tag", "onResponse: " + response);
 
-                                    activity.refresh();
+
                                 }
                             }, new Response.ErrorListener() {
 

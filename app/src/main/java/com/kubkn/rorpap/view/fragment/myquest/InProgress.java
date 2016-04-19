@@ -4,11 +4,9 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 
 import com.android.volley.Response;
 import com.kubkn.rorpap.R;
@@ -80,12 +78,13 @@ public class InProgress extends RefreshableFragment {
     @Override
     public void refresh() {
         loading.show();
+        recyclerView.setAdapter(null);
         String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
         app.getHttpRequest().get("request/get_quest/Reserved/" + messenger_id, null, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if ((RequestsAdapter) recyclerView.getAdapter() == null) {
+                if (recyclerView.getAdapter() == null) {
                     adapter = new RequestsAdapter((RefreshableActivity) getActivity(), SortRequest(Request.getLists(response)), RequestsAdapter.MY_QUEST);
                     recyclerView.setAdapter(adapter);
                 }
@@ -102,7 +101,7 @@ public class InProgress extends RefreshableFragment {
         app.getHttpRequest().get("request/get_quest/Inprogress/" + messenger_id, null, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if ((RequestsAdapter) recyclerView.getAdapter() == null) {
+                if (recyclerView.getAdapter() == null) {
                     adapter = new RequestsAdapter((RefreshableActivity) getActivity(), SortRequest(Request.getLists(response)), RequestsAdapter.MY_QUEST);
                     recyclerView.setAdapter(adapter);
                 }

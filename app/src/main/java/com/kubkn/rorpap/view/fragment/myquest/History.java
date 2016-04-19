@@ -2,7 +2,6 @@ package com.kubkn.rorpap.view.fragment.myquest;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -78,6 +77,7 @@ public class History extends RefreshableFragment {
     @Override
     public void refresh() {
         loading.show();
+        recyclerView.setAdapter(null);
         String messenger_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
         app.getHttpRequest().get("request/get_quest/Finished/" + messenger_id, null, new Response.Listener<String>() {

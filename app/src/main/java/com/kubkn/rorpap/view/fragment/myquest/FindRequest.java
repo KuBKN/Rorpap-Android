@@ -3,10 +3,8 @@ package com.kubkn.rorpap.view.fragment.myquest;
 import android.app.ProgressDialog;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,6 +90,7 @@ public class FindRequest extends RefreshableFragment {
     @Override
     public void refresh() {
         loading.show();
+        recyclerView.setAdapter(null);
         final String sender_id = app.getPreferences().getString(Preferences.KEY_USERID);
 
         requestIDAcceptedSet = new HashSet<>();
