@@ -1,7 +1,9 @@
 package com.kubkn.rorpap.service.gcm;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
@@ -11,6 +13,7 @@ import android.widget.RemoteViews;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.service.LocationService;
+import com.kubkn.rorpap.service.RorpapApplication;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,50 +29,30 @@ public class GCMNotificationIntentService extends GcmListenerService {
             Log.d("pushno", from);
             Log.d("pushno", data.toString());
 
+            RorpapApplication app = (RorpapApplication) getApplicationContext();
+
             String type = data.getString("type");
-            Log.d("pushno11", type);
+            String signal = data.getString("signal");
+            String title = data.getString("title");
+            String content = data.getString("content");
+
             if (type.equals("0")) {
-                String signal = data.getString("signal");
-
                 if (signal.equals("101")) {
-
-                    Log.d("pushno12", signal);
-
-                    startService(new Intent(this, LocationService.class));
-
-                    noti("รับคำสั่งมาแล้วครับ", "จะเริ่มส่งตำแหน่ง GPS ไปนะ :)");
-
+                    if (!app.isMyServiceRunning(LocationService.class)) {
+                        startService(new Intent(this, LocationService.class));
+                    }
                 } else if (signal.equals("102")) {
-                    stopService(new Intent(this, LocationService.class));
+                    if (app.isMyServiceRunning(LocationService.class)) {
+                        stopService(new Intent(this, LocationService.class));
+                    }
+                }
 
-                    noti("รับคำสั่งมาแล้วครับ", "หยุดส่ง GPS จ้า");
+                if (!title.equals("")) {
+                    noti(title, content);
                 }
             }
-            else if (type.equals("1")) {
 
-            }
 
-//            String notification = data.getString("notification", null);
-//            if (notification != null) {
-//
-//                try {
-//                    JSONObject jo = new JSONObject(notification);
-//
-//                    int code = jo.getInt("code");
-//
-//                    // start to send gps location
-//                    if (code == 101) {
-//                        String requestId = jo.getString("requestId");
-//
-//                    }
-//
-//
-//
-//                } catch (JSONException e) {
-//
-//                }
-//
-//            }
         }
     }
 

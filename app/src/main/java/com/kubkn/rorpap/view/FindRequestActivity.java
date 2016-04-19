@@ -3,6 +3,7 @@ package com.kubkn.rorpap.view;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -20,10 +21,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.android.volley.Response;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.kubkn.rorpap.R;
+import com.kubkn.rorpap.model.Request;
 import com.kubkn.rorpap.service.Preferences;
 import com.kubkn.rorpap.service.RorpapApplication;
 import com.kubkn.rorpap.view.fragment.myquest.FindRequest;
+
+import java.util.ArrayList;
 
 public class FindRequestActivity extends RefreshableActivity {
 
@@ -201,8 +214,6 @@ public class FindRequestActivity extends RefreshableActivity {
 
         private String[] tags = {
                 "ALL REQUESTS"
-                // TODO: implement filter / search request
-                //"Filter Requests"
         };
 
         public MyQuestPagerAdapter(FragmentManager fm) {

@@ -1,6 +1,7 @@
 package com.kubkn.rorpap.view.fragment.myquest;
 
 import android.app.ProgressDialog;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.Response;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.kubkn.rorpap.R;
 import com.kubkn.rorpap.model.Request;
 import com.kubkn.rorpap.service.Preferences;
@@ -133,6 +140,14 @@ public class FindRequest extends RefreshableFragment {
                                 return rhs.get_id().compareTo(lhs.get_id());
                             }
                         });
+
+
+                        ArrayList<Request> filtedList = new ArrayList<Request>();
+                        for (int i = 0; i < filtedList.size(); i++) {
+
+                        }
+
+
 
                         RequestsAdapter adapter = new RequestsAdapter((RefreshableActivity) getActivity(), resultList, RequestsAdapter.MY_QUEST);
                         recyclerView.setAdapter(adapter);
